@@ -56,7 +56,7 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
             className="font-display text-xl font-semibold tracking-tight text-ink whitespace-nowrap"
             aria-label={en ? "Go to homepage" : "Ir para a página inicial"}
           >
-            nayra<span className="text-terracotta">.dev</span>
+            zanini<span className="text-terracotta">.dev</span>
           </a>
 
           <nav className="flex items-center gap-3 sm:gap-5 lg:gap-7 overflow-x-auto">
