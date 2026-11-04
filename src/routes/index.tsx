@@ -7,7 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "nayra.dev | Náyra Zanini" },
+      { title: "zanini.dev | Náyra Zanini" },
       {
         name: "description",
         content:
