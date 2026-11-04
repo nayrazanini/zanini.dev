@@ -124,7 +124,7 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div>
               <p className="font-display text-ink text-base font-semibold">
-                nayra<span className="text-terracotta">.dev</span>
+                zanini<span className="text-terracotta">.dev</span>
               </p>
 
               <p className="mt-1 text-xs text-muted-foreground">
