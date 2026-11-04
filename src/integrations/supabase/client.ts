@@ -1,0 +1,66 @@
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./types";
+
+function isNewSupabaseApiKey(value: string): boolean {
+  return value.startsWith("sb_publishable_") || value.startsWith("sb_secret_");
+}
+
+function createSupabaseFetch(supabaseKey: string): typeof fetch {
+  return (input, init) => {
+    const headers = new Headers(
+      typeof Request !== "undefined" && input instanceof Request ? input.headers : undefined,
+    );
+
+    if (init?.headers) {
+      new Headers(init.headers).forEach((value, key) => headers.set(key, value));
+    }
+
+    // As chaves novas do Supabase são strings opacas, não JWTs Bearer.
+    if (isNewSupabaseApiKey(supabaseKey) && headers.get("Authorization") === `Bearer ${supabaseKey}`) {
+      headers.delete("Authorization");
+    }
+
+    headers.set("apikey", supabaseKey);
+    return fetch(input, { ...init, headers });
+  };
+}
+
+function createSupabaseClient() {
+  // No navegador, o Vite substitui import.meta.env em tempo de build.
+  // No servidor (SSR), usa process.env como alternativa.
+  const serverEnv = typeof process !== "undefined" ? process.env : {};
+  const SUPABASE_URL = import.meta.env["VITE_SUPABASE_URL"] || serverEnv["SUPABASE_URL"];
+  const SUPABASE_PUBLISHABLE_KEY =
+    import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] || serverEnv["SUPABASE_PUBLISHABLE_KEY"];
+
+  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+    const missing = [
+      ...(!SUPABASE_URL ? ["VITE_SUPABASE_URL"] : []),
+      ...(!SUPABASE_PUBLISHABLE_KEY ? ["VITE_SUPABASE_PUBLISHABLE_KEY"] : []),
+    ];
+    const message = `Variável(is) de ambiente do Supabase ausente(s): ${missing.join(", ")}. Veja o README.md.`;
+    console.error(`[Supabase] ${message}`);
+    throw new Error(message);
+  }
+
+  return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    global: {
+      fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY),
+    },
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  });
+}
+
+let _supabase: ReturnType<typeof createSupabaseClient> | undefined;
+
+// Uso: import { supabase } from "@/integrations/supabase/client";
+// O cliente é criado só no primeiro acesso, para não quebrar o SSR no import.
+export const supabase = new Proxy({} as ReturnType<typeof createSupabaseClient>, {
+  get(_, prop, receiver) {
+    if (!_supabase) _supabase = createSupabaseClient();
+    return Reflect.get(_supabase, prop, receiver);
+  },
+});
