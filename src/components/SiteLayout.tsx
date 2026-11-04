@@ -1,6 +1,6 @@
 
 import type { ReactNode, MouseEvent } from "react";
-import { LanguageProvider, useLanguage } from "@/context/LanguageContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SOCIAL_LINKS = [
   { label: "GitHub", href: "https://github.com/nayrazanini" },
@@ -9,11 +9,7 @@ const SOCIAL_LINKS = [
 ] as const;
 
 export function SiteLayout({ children }: { children: ReactNode }) {
-  return (
-    <LanguageProvider>
-      <SiteLayoutContent>{children}</SiteLayoutContent>
-    </LanguageProvider>
-  );
+  return <SiteLayoutContent>{children}</SiteLayoutContent>;
 }
 
 function SiteLayoutContent({ children }: { children: ReactNode }) {
@@ -34,7 +30,6 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
   ) {
     const sectionId = href.split("#")[1];
 
-    // Se já estamos na página inicial, fazemos a rolagem diretamente.
     if (window.location.pathname === "/" && sectionId) {
       const section = document.getElementById(sectionId);
 

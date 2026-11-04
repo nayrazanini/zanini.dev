@@ -11,157 +11,201 @@ export interface Projeto {
   description: string;
   tags: string[];
   repo: string;
-  /** Rota interna quando o projeto tem página própria além do case study */
   appPath?: string;
+  sqlPath?: string;
   problem: string;
   highlights: { n: string; title: string; text: string }[];
   model?: { label: string; desc: string }[];
+  modules?: { title: string; text: string }[];
   sections: ProjetoSecao[];
   learnings: string[];
 }
 
 export const PROJETOS: Projeto[] = [
   {
+    n: "01",
+    slug: "financas-pessoais",
+    title: "CONTROLE FINANCEIRO",
+    tagline: "Aplicação full-stack + SQL Server",
+    description:
+      "Sistema de controle financeiro pessoal desenhado para aplicar, na prática, modelagem relacional e T-SQL: o banco concentra as regras de negócio e a aplicação orquestra a experiência.",
+    tags: [
+      "SQL Server 2022",
+      "T-SQL",
+      "Stored Procedures",
+      "Views",
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Zod",
+      "JWT",
+      "Docker Compose",
+    ],
+    repo: "https://github.com/nayrazanini/financas-pessoais",
+    appPath: "/projetos/financas-pessoais/app",
+    sqlPath: "https://github.com/nayrazanini/financas-pessoais/tree/main/sql",
+    problem:
+      "Planilhas de controle financeiro não garantem integridade, não mantêm um histórico confiável e dificultam análises sem retrabalho manual. A proposta foi resolver isso com um banco relacional bem modelado e uma interface prática para o uso diário.",
+    highlights: [
+      {
+        n: "01",
+        title: "Escrita concentrada em stored procedures",
+        text: "As operações de inclusão, alteração e exclusão são centralizadas em procedures, com regras de negócio no banco, validação de propriedade dos dados e transações explícitas.",
+      },
+      {
+        n: "02",
+        title: "Leitura por views de consolidação",
+        text: "Saldos por conta, resumo mensal por categoria e acompanhamento de orçamento são disponibilizados por views, evitando remontar as agregações na aplicação.",
+      },
+      {
+        n: "03",
+        title: "Consultas analíticas",
+        text: "O projeto reúne consultas com CTEs, LAG para variação entre períodos, DENSE_RANK para classificação de gastos e total acumulado.",
+      },
+      {
+        n: "04",
+        title: "Autenticação e isolamento de dados",
+        text: "A aplicação utiliza senha com bcrypt, sessão JWT httpOnly e proteção de rotas privadas. As operações no banco consideram o identificador do usuário para restringir o acesso aos próprios dados.",
+      },
+    ],
+    model: [
+      { label: "Usuario", desc: "Credenciais e perfil, com e-mail único." },
+      { label: "Conta", desc: "Contas do usuário e saldo inicial." },
+      { label: "Categoria", desc: "Categorias de receitas e despesas por usuário." },
+      { label: "Transacao", desc: "Lançamentos associados à conta, categoria, tipo, valor e data." },
+      { label: "Orcamento", desc: "Limite mensal por categoria e usuário." },
+    ],
+    modules: [
+      {
+        title: "Dashboard",
+        text: "Saldo consolidado, receitas e despesas do mês e evolução por categoria.",
+      },
+      {
+        title: "Lançamentos",
+        text: "Cadastro, listagem paginada e exclusão de transações, com filtros por período e tipo.",
+      },
+      {
+        title: "Orçamentos",
+        text: "Definição de limite mensal por categoria e acompanhamento do percentual consumido.",
+      },
+    ],
+    sections: [
+      {
+        title: "Engenharia de software",
+        paragraphs: [
+          "O repositório inclui docker-compose.yml para execução local do SQL Server, scripts SQL numerados e decisões técnicas documentadas.",
+          "A aplicação utiliza validação de entrada com Zod, autenticação baseada em JWT e uma organização que separa a interface das regras de persistência.",
+        ],
+      },
+      {
+        title: "Banco de dados",
+        paragraphs: [
+          "O modelo utiliza constraints e índices de apoio às consultas por período. O saldo e os indicadores são obtidos a partir dos registros financeiros e das consultas de consolidação.",
+          "O repositório contém scripts de schema, procedures, views e consultas analíticas para reproduzir a estrutura do banco.",
+        ],
+      },
+    ],
+    learnings: [
+      "Centralizar regras de negócio no banco ajuda a manter consistência entre operações.",
+      "Views podem simplificar consultas recorrentes e separar leitura da lógica da interface.",
+      "Transações e validações são fundamentais para proteger a integridade dos dados.",
+      "Autenticação e autorização precisam ser consideradas também na camada de acesso aos dados.",
+    ],
+  },
+  {
     n: "02",
     slug: "pr-gerencia-menu",
     title: "PR_GERENCIA_MENU",
     tagline: "Gerenciador de menus dinâmicos em T-SQL",
     description:
-      "Procedure única em SQL Server, parametrizada por sistema, que cria a árvore de menu, gera códigos de perfil de acesso de forma thread-safe e associa usuários em uma só chamada transacional. Versão final unificada, hoje usada por 4 sistemas da organização. Baseada em projeto real de trabalho, com nomes genéricos.",
-    tags: ["SQL Server", "T-SQL", "Transações", "Concorrência", "Multi-sistema"],
-    repo: "https://github.com/nayrazanini/PR_GERENCIA_MENU",
+      "Procedure parametrizada por sistema que cria hierarquias de menus, gera códigos de perfil de acesso com proteção contra concorrência e associa usuários em uma única operação transacional. Versão unificada baseada em projeto real, com nomes genéricos.",
+    tags: ["SQL Server", "T-SQL", "Stored Procedures", "Transações", "Concorrência"],
+    repo: "https://github.com/nayrazanini/pr_gerencia_menu",
     problem:
-      "Vários sistemas da empresa compartilham o mesmo catálogo de transações, módulos e perfis, mas cada um tem sua própria regra de nomeação de perfil e sua própria árvore de menu. Antes, cada sistema mantinha uma cópia quase idêntica da procedure — corrigir um bug significava corrigir em todas. Além disso, liberar o acesso a uma tela exigia vários passos manuais, o que gerava acesso incompleto e menu inconsistente com a permissão.",
+      "Sistemas diferentes compartilhavam catálogos de transações, módulos e perfis, mas mantinham regras próprias de nomenclatura e árvores de menu. A existência de procedures quase idênticas aumentava o esforço de manutenção e tornava a liberação de acessos um processo sujeito a inconsistências.",
     highlights: [
       {
         n: "01",
-        title: "Uma procedure para 4 sistemas",
-        text: "O parâmetro @SISTEMA concentra o que varia (prefixo de menu e regra do código de perfil) e mantém comum o que é igual: validação, criação da hierarquia e tratamento de erro. Adicionar um sistema novo é acrescentar uma condição na regra de prefixo, não duplicar a procedure.",
+        title: "Uma procedure para múltiplos sistemas",
+        text: "O parâmetro de sistema concentra as diferenças de prefixos e regras de perfil, mantendo compartilhadas as etapas de validação, criação da hierarquia e tratamento de erros.",
       },
       {
         n: "02",
-        title: "Código de perfil sem condição de corrida",
-        text: "O código (ex.: SISA_Fin_7 por departamento, ou SISB_1 fixo por sistema) é o maior número já usado no prefixo + 1. Um sp_getapplock nomeado garante que duas execuções simultâneas nunca reservem o mesmo código.",
+        title: "Geração segura de códigos de perfil",
+        text: "A geração considera a sequência já utilizada e utiliza sp_getapplock para proteger a operação contra condições de corrida em execuções simultâneas.",
       },
       {
         n: "03",
-        title: "Hierarquia validada e criada sob demanda",
-        text: "A procedure recusa nível pulado (não aceita @SUBMENU3 sem @SUBMENU2), garante que o módulo exista no catálogo e cria só os níveis faltantes do caminho — o menu raiz apenas se @CRIAR_MENU_SE_NAO_EXISTIR = 'S'. Tudo dentro de uma transação com TRY/CATCH, XACT_ABORT e XACT_STATE: ou grava tudo, ou nada.",
+        title: "Criação validada da hierarquia",
+        text: "A procedure valida os níveis de submenu, verifica a existência do módulo e cria os níveis ausentes dentro de uma transação, com TRY/CATCH, XACT_ABORT e XACT_STATE.",
       },
     ],
     model: [
-      { label: "catalogo.TB_USUARIO", desc: "Usuários cadastrados, compartilhados entre sistemas." },
+      { label: "catalogo.TB_USUARIO", desc: "Usuários cadastrados e compartilhados entre sistemas." },
       { label: "catalogo.TB_MODULO", desc: "Módulos cadastrados por sistema." },
-      { label: "catalogo.TB_TRANSACAO_MENU", desc: "Cadastro de cada tela/transação disponível." },
+      { label: "catalogo.TB_TRANSACAO_MENU", desc: "Catálogo de telas e transações disponíveis." },
       { label: "catalogo.TB_PERFIL_ACESSO", desc: "Perfis de acesso gerados pela procedure." },
-      { label: "catalogo.TB_PERFIL_TRANSACAO", desc: "Vínculo entre um perfil de acesso e uma transação." },
+      { label: "catalogo.TB_PERFIL_TRANSACAO", desc: "Vínculo entre perfil de acesso e transação." },
       { label: "catalogo.TB_PERFIL_USUARIO", desc: "Associação entre perfis de acesso e usuários." },
-      { label: "dbo.TB_MENU", desc: "Árvore de navegação — local a cada sistema." },
+      { label: "dbo.TB_MENU", desc: "Árvore de navegação mantida localmente por sistema." },
     ],
     sections: [
       {
-        title: "Regra por sistema, lógica compartilhada",
+        title: "Regras específicas e lógica compartilhada",
         paragraphs: [
-          "SISA usa o prefixo de menu SISA.Menu e gera o perfil por departamento, com um prefixo genérico de fallback. SISB usa apenas Menu, sem o código do sistema, e perfil fixo e único (SISB_1). SISC e SISD seguem o padrão SISC.Menu / SISD.Menu, também com perfil fixo.",
-          "A hierarquia de menu é processada dinamicamente com uma variável TABLE percorrida em loop, o que permite qualquer profundidade de submenu sem repetir código por nível.",
+          "Cada sistema pode possuir um padrão próprio de prefixo de menu e geração de perfil. A procedure concentra essas variações em regras parametrizadas, evitando manter uma cópia independente para cada sistema.",
+          "A hierarquia é processada dinamicamente por meio de uma variável do tipo TABLE e estrutura de repetição, permitindo tratar diferentes níveis sem duplicar blocos de código.",
         ],
       },
       {
-        title: "Contrato de saída em vez de erro cru",
+        title: "Contrato de retorno e tratamento de erros",
         paragraphs: [
-          "O retorno é explícito: 1 para sucesso (perfil criado, e menu criado se necessário), -1 para erro de validação (sistema inválido, parâmetro faltando ou nível pulado), -3 quando o menu raiz não existe e a criação não foi autorizada, e o número do erro do SQL Server para falha técnica inesperada.",
-          "Ponto conhecido a revisar: usuários informados que não existem no catálogo são ignorados silenciosamente. Se a aplicação precisar saber quais foram ignorados, isso deve ser tratado antes da chamada ou a procedure precisa reportar essa lista no retorno — item do próximo ciclo de ajustes.",
+          "A procedure utiliza códigos de retorno explícitos para diferenciar sucesso, falhas de validação, ausência de menu raiz quando a criação não foi autorizada e erros técnicos inesperados.",
+          "As operações são agrupadas em transação para garantir que a criação da estrutura e os vínculos relacionados sejam confirmados em conjunto ou desfeitos em caso de falha.",
         ],
       },
       {
-        title: "Estado atual e próximo passo",
+        title: "Estado atual",
         paragraphs: [
-          "Esta é a versão final e unificada, que substituiu as versões anteriores — uma procedure separada por sistema. O próximo passo planejado é permitir que a aplicação chame a procedure diretamente (hoje ela roda via script T-SQL), o que envolve ajustar o contrato de chamada e, possivelmente, uma camada de serviço/API entre aplicação e banco.",
-          "O repositório traz o script de criação do banco de demonstração, a procedure comentada e exemplos de uso cobrindo os 4 sistemas e os casos de erro. Nomes de tabelas, sistemas e módulos são genéricos: a lógica e a arquitetura refletem o projeto real, desenvolvido em parceria com Bruno Guida. Licença MIT.",
+          "Esta versão unificada substitui implementações anteriores separadas por sistema. O repositório disponibiliza o script de criação do banco de demonstração, a procedure comentada e exemplos de execução.",
+          "Os nomes de tabelas, sistemas e módulos são genéricos. A lógica e a arquitetura refletem um projeto real desenvolvido em parceria.",
         ],
       },
     ],
     learnings: [
-      "Sequencial calculado sob lock é o que separa código único de código provavelmente único.",
-      "Unificar N cópias quase idênticas em uma procedure parametrizada troca duplicação por um único ponto de correção.",
-      "Separar catálogo compartilhado de dados locais por sistema é o que torna a unificação possível.",
-      "Códigos de retorno explícitos fazem a procedure ser integrável; exceção solta faz cada consumidor adivinhar.",
-    ],
-  },
-  {
-    n: "05",
-    slug: "estoque-sql-server",
-    title: "estoque-sql-server",
-    tagline: "Banco de dados relacional",
-    description:
-      "Modelagem e implementação de um sistema de controle de estoque em SQL Server, com tabelas, relacionamentos, procedures e scripts T-SQL para entrada, saída e consulta de produtos.",
-    tags: ["SQL Server", "T-SQL", "Modelagem"],
-    repo: "https://github.com/nayrazanini/estoque-sql-server",
-    problem:
-      "Controlar estoque em planilha significa aceitar saldo negativo, movimentação sem rastro e nenhuma garantia de que a baixa realmente aconteceu. O objetivo foi levar esse controle para um banco relacional em que o próprio banco impede o estado inválido.",
-    highlights: [
-      {
-        n: "01",
-        title: "Modelagem normalizada",
-        text: "Produtos, fornecedores, movimentações e usuários em tabelas separadas, com chaves estrangeiras e constraints garantindo integridade referencial.",
-      },
-      {
-        n: "02",
-        title: "Movimentação sempre por procedure",
-        text: "Entradas e saídas passam por stored procedures que validam quantidade disponível dentro de uma transação — evitando saldo negativo por concorrência.",
-      },
-      {
-        n: "03",
-        title: "Saldo calculado, não digitado",
-        text: "O saldo atual é derivado das movimentações por meio de views, o que mantém o histórico auditável em vez de sobrescrever um campo de quantidade.",
-      },
-    ],
-    model: [
-      { label: "Produto", desc: "Cadastro, unidade de medida e estoque mínimo." },
-      { label: "Fornecedor", desc: "Dados do fornecedor vinculados às entradas." },
-      { label: "Movimentacao", desc: "Entradas e saídas com data, quantidade e responsável." },
-    ],
-    sections: [
-      {
-        title: "Consultas de apoio à operação",
-        paragraphs: [
-          "Além do CRUD, o projeto traz consultas de negócio: produtos abaixo do estoque mínimo, curva de giro por período e histórico de movimentação por produto.",
-          "As consultas exercitam JOINs, agregações e funções de janela, mostrando o banco como camada de análise e não apenas de armazenamento.",
-        ],
-      },
-    ],
-    learnings: [
-      "Constraint bem escolhida elimina validação duplicada na aplicação.",
-      "Transação explícita é o que diferencia baixa de estoque confiável de baixa aproximada.",
-      "Script idempotente e numerado torna o banco reprodutível por qualquer pessoa.",
+      "Gerar sequências sob um mecanismo de bloqueio é essencial para evitar códigos duplicados em execuções concorrentes.",
+      "Uma procedure parametrizada reduz duplicação e centraliza a manutenção.",
+      "Separar catálogo compartilhado de dados específicos por sistema facilita a reutilização.",
+      "Códigos de retorno explícitos tornam a procedure mais previsível para quem a consome.",
     ],
   },
   {
     n: "04",
     slug: "ponto-sql-server",
-    title: "ponto-sql-server",
-    tagline: "Banco de dados relacional",
+    title: "PONTO SQL SERVER",
+    tagline: "Sistema de controle de ponto em SQL Server",
     description:
-      "Sistema de registro e controle de ponto em SQL Server, com procedures e scripts T-SQL para gestão de funcionários, marcações de entrada/saída e geração de relatórios.",
-    tags: ["SQL Server", "T-SQL", "Relatórios"],
+      "Projeto de banco de dados para registro e controle de ponto, com procedures e scripts T-SQL voltados ao cadastro de funcionários, marcações de entrada e saída e geração de relatórios.",
+    tags: ["SQL Server", "T-SQL", "Stored Procedures", "Modelagem", "Relatórios"],
     repo: "https://github.com/nayrazanini/ponto-sql-server",
     problem:
-      "Fechamento de folha depende de marcações confiáveis. O desafio foi modelar jornada, marcações e ocorrências de forma que horas trabalhadas, atrasos e extras saíssem do banco já calculados.",
+      "O fechamento de folha depende de marcações confiáveis. O desafio do projeto é estruturar jornadas, marcações e ocorrências para permitir consultas consistentes de horas trabalhadas, atrasos e horas extras.",
     highlights: [
       {
         n: "01",
         title: "Marcações versus jornada esperada",
-        text: "Cada funcionário tem jornada de referência; as marcações são comparadas com ela para derivar horas trabalhadas, atraso e hora extra.",
+        text: "Cada funcionário possui uma jornada de referência. As marcações são comparadas com ela para calcular horas trabalhadas, atrasos e horas extras.",
       },
       {
         n: "02",
-        title: "Regras no banco",
-        text: "Procedures validam sequência de marcações (não permite saída sem entrada) e recusam registros duplicados no mesmo instante.",
+        title: "Regras aplicadas no banco",
+        text: "Procedures validam a sequência das marcações, impedindo saída sem entrada anterior e tratando registros duplicados no mesmo instante.",
       },
       {
         n: "03",
         title: "Relatórios por período",
-        text: "Consultas de espelho de ponto mensal e consolidado por setor, com agregações por funcionário e data.",
+        text: "Consultas permitem gerar espelhos de ponto mensais e consolidações por setor, funcionário e data.",
       },
     ],
     model: [
@@ -173,147 +217,67 @@ export const PROJETOS: Projeto[] = [
       {
         title: "T-SQL aplicado a data e hora",
         paragraphs: [
-          "O projeto explora o que costuma dar errado em controle de ponto: diferença entre DATE e DATETIME, virada de dia, arredondamento de minutos e agrupamento por competência mensal.",
-          "As consultas usam funções de data, CASE para classificar ocorrências e agregações condicionais para separar horas normais de horas extras.",
+          "O projeto trabalha situações comuns em sistemas de ponto, como diferenças entre DATE e DATETIME, virada de dia, arredondamento de minutos e agrupamento por competência mensal.",
+          "As consultas utilizam funções de data, CASE para classificação de ocorrências e agregações condicionais para separar horas normais de horas extras.",
         ],
       },
     ],
     learnings: [
-      "Tratar data/hora com rigor evita divergência silenciosa no fechamento.",
-      "Validar sequência de eventos no banco é mais seguro do que confiar na tela.",
-      "Relatório é requisito de modelagem, não etapa posterior.",
+      "Tratar data e hora com rigor evita divergências silenciosas no fechamento.",
+      "Validar a sequência de eventos no banco é mais seguro do que depender apenas da interface.",
+      "Os relatórios devem ser considerados desde a modelagem dos dados.",
     ],
   },
   {
-    n: "03",
-    slug: "rastreador-estudo-disciplina",
-    title: "rastreador-estudo-disciplina",
-    tagline: "SQL Server + app utilizável",
+    n: "05",
+    slug: "estoque-sql-server",
+    title: "ESTOQUE SQL SERVER",
+    tagline: "Sistema de controle de estoque em SQL Server",
     description:
-      "Banco em SQL Server que registra sessões de estudo, calcula a sequência de dias seguidos (streak) com a técnica gaps and islands, agenda revisões espaçadas automaticamente e mede metas semanais por matéria. Disponível também como app utilizável aqui no site.",
-    tags: ["SQL Server", "T-SQL", "Gaps and islands", "Repetição espaçada"],
-    repo: "https://github.com/nayrazanini/rastreador-estudo-disciplina",
-    appPath: "/projetos/rastreador-estudo-disciplina/app",
+      "Modelagem e implementação de um sistema de controle de estoque em SQL Server, com tabelas, relacionamentos, procedures e scripts T-SQL para entrada, saída e consulta de produtos.",
+    tags: ["SQL Server", "T-SQL", "Stored Procedures", "Modelagem", "Integridade"],
+    repo: "https://github.com/nayrazanini/estoque-sql-server",
     problem:
-      "Manter uma rotina de estudos consistente é difícil sem visibilidade: é fácil perder a noção de quantas horas foram estudadas por matéria na semana, esquecer de revisar um assunto no momento certo e não perceber quando a sequência de dias estudando foi quebrada.",
+      "Controlar estoque em planilhas pode gerar saldos negativos, movimentações sem histórico e falta de garantia de que uma baixa foi realizada corretamente. O objetivo é utilizar um banco relacional para manter o histórico e impedir estados inválidos.",
     highlights: [
-      { n: "01", title: "Revisão agendada sozinha", text: "sp_RegistrarSessaoEstudo grava a sessão e já agenda a primeira revisão; sp_ConcluirRevisao marca como feita e agenda a próxima. A fila de repetição espaçada anda sem passo manual." },
-      { n: "02", title: "Streak com gaps and islands", text: "vw_SequenciasEstudo subtrai um ROW_NUMBER() da data: a diferença é constante dentro de cada sequência de dias seguidos, permitindo agrupar tudo com um único GROUP BY, sem loop." },
-      { n: "03", title: "Progressão Leitner em um lugar só", text: "fn_CalcularProximaRevisao concentra os intervalos de 1, 3, 7, 14 e 30 dias. Mudar o algoritmo não exige tocar nas procedures." },
+      {
+        n: "01",
+        title: "Modelagem relacional",
+        text: "Produtos, fornecedores, movimentações e usuários são organizados em tabelas relacionadas, com chaves estrangeiras e constraints para garantir integridade referencial.",
+      },
+      {
+        n: "02",
+        title: "Movimentações por procedures",
+        text: "Entradas e saídas são processadas por stored procedures que validam a quantidade disponível dentro de uma transação.",
+      },
+      {
+        n: "03",
+        title: "Saldo derivado das movimentações",
+        text: "O saldo atual é obtido a partir do histórico de movimentações por meio de views, preservando a rastreabilidade em vez de sobrescrever uma quantidade manualmente.",
+      },
     ],
     model: [
-      { label: "Materias", desc: "Matérias/assuntos de estudo." },
-      { label: "SessoesEstudo", desc: "Cada sessão registrada: data, duração e assunto." },
-      { label: "MetasSemanais", desc: "Meta de horas por matéria, por semana." },
-      { label: "Revisoes", desc: "Fila de repetição espaçada gerada a partir das sessões." },
+      { label: "Produto", desc: "Cadastro, unidade de medida e estoque mínimo." },
+      { label: "Fornecedor", desc: "Dados dos fornecedores associados às entradas." },
+      { label: "Movimentacao", desc: "Entradas e saídas com data, quantidade e responsável." },
     ],
     sections: [
       {
-        title: "Do banco para um app que você pode usar",
+        title: "Consultas de apoio à operação",
         paragraphs: [
-          "A versão web aqui no portfólio reproduz em TypeScript as mesmas regras dos objetos T-SQL: registrar sessão agenda revisão, concluir revisão sobe o nível, a sequência é calculada por gaps and islands e o progresso semanal cruza meta com tempo estudado.",
-          "O app roda inteiramente no navegador, com dados de exemplo e armazenamento local: qualquer pessoa pode testar sem criar conta, e nada é enviado a servidor. As regras têm testes automatizados.",
-        ],
-      },
-      {
-        title: "Próximos passos",
-        paragraphs: [
-          "Notificação quando uma revisão estiver atrasada, gráfico de evolução do streak ao longo do tempo e meta mensal além da semanal.",
+          "Além das operações de cadastro, o projeto reúne consultas para identificar produtos abaixo do estoque mínimo, analisar movimentações por período e consultar o histórico de cada produto.",
+          "As consultas exercitam JOINs, agregações e funções de janela, utilizando o banco também como camada de análise.",
         ],
       },
     ],
     learnings: [
-      "Eliminar o passo manual de agendar revisão foi a decisão que fez a ferramenta ser usada de verdade.",
-      "Gaps and islands resolve em um GROUP BY o que pareceria exigir um loop dia a dia.",
-      "Concentrar uma regra variável em uma function isola a mudança do resto do sistema.",
-    ],
-  },
-  {
-    n: "07",
-    slug: "nayra-dev",
-    title: "nayra.dev",
-    tagline: "Portfólio pessoal",
-    description:
-      "Site pessoal construído em HTML e CSS, hospedado no GitHub Pages. Primeira versão estática do meu portfólio, hoje evoluída para a versão atual.",
-    tags: ["HTML", "CSS", "GitHub Pages"],
-    repo: "https://github.com/nayrazanini",
-    problem:
-      "Precisava de um espaço próprio para apresentar trajetória e projetos, sem depender de plataformas de terceiros — e aprender, na prática, como um site sai do editor para a web.",
-    highlights: [
-      {
-        n: "01",
-        title: "Do estático ao versionado",
-        text: "A primeira versão foi HTML e CSS puros publicados no GitHub Pages: publicação por push, histórico versionado e zero infraestrutura.",
-      },
-      {
-        n: "02",
-        title: "Evolução para o site atual",
-        text: "O portfólio migrou para uma aplicação com rotas próprias, metadados por página, sitemap e foco em performance e SEO.",
-      },
-      {
-        n: "03",
-        title: "Design system consistente",
-        text: "Tokens de cor e tipografia centralizados, tema escuro e componentes reutilizados em todas as páginas.",
-      },
-    ],
-    sections: [
-      {
-        title: "Cuidados de front-end",
-        paragraphs: [
-          "Layout responsivo pensado primeiro no mobile, HTML semântico, contraste adequado no tema escuro e imagens com texto alternativo.",
-          "Cada página tem título e descrição próprios, além de sitemap para indexação — SEO tratado como parte do produto.",
-        ],
-      },
-    ],
-    learnings: [
-      "Publicar cedo ensina mais do que planejar demais.",
-      "Consistência visual vem de tokens, não de valores repetidos no componente.",
-    ],
-  },
-  {
-    n: "06",
-    slug: "autoresumo",
-    title: "AutoResumo",
-    tagline: "Gerador de resumos",
-    description:
-      "Ferramenta em JavaScript que processa texto e gera resumos em formato Markdown — pensada para estudo e produtividade.",
-    tags: ["JavaScript", "Markdown", "Automação"],
-    repo: "https://github.com/nayrazanini",
-    problem:
-      "Resumir material de aula manualmente consome o tempo que deveria ser gasto estudando. A ideia foi automatizar a parte mecânica: estruturar o texto em tópicos aproveitáveis.",
-    highlights: [
-      {
-        n: "01",
-        title: "Processamento de texto",
-        text: "Limpeza, segmentação em sentenças e pontuação por relevância para selecionar o que entra no resumo.",
-      },
-      {
-        n: "02",
-        title: "Saída em Markdown",
-        text: "O resultado sai pronto para colar em qualquer caderno digital, com títulos e listas — formato durável e portátil.",
-      },
-      {
-        n: "03",
-        title: "JavaScript sem dependências",
-        text: "Implementação em JavaScript puro, focada em legibilidade das funções e facilidade de ajuste das regras.",
-      },
-    ],
-    sections: [
-      {
-        title: "Decisões técnicas",
-        paragraphs: [
-          "Optei por regras determinísticas em vez de um modelo externo: o resultado é previsível, roda offline e permite entender exatamente por que uma frase foi mantida.",
-          "As funções foram separadas por responsabilidade (limpar, segmentar, pontuar, formatar), o que facilitou testar cada etapa isoladamente.",
-        ],
-      },
-    ],
-    learnings: [
-      "Automação simples e explicável resolve a maioria dos casos do dia a dia.",
-      "Separar etapas puras torna o código testável sem esforço extra.",
+      "Uma constraint bem definida reduz a necessidade de validações duplicadas na aplicação.",
+      "Transações explícitas tornam as movimentações de estoque mais confiáveis.",
+      "Scripts numerados e idempotentes facilitam a reprodução do ambiente.",
     ],
   },
 ];
 
-export function getProjeto(slug: string) {
-  return PROJETOS.find((p) => p.slug === slug);
+export function getProjeto(slug: string): Projeto | undefined {
+  return PROJETOS.find((projeto) => projeto.slug === slug);
 }

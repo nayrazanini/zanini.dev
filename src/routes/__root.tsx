@@ -11,7 +11,7 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-
+import { LanguageProvider } from "../context/LanguageContext";
 // URL pública do site (ex.: https://seudominio.com), definida em VITE_SITE_URL.
 // Usada para montar a URL absoluta da imagem de pré-visualização (og:image).
 const SITE_URL = ((import.meta.env["VITE_SITE_URL"] as string | undefined) ?? "").replace(/\/$/, "");
@@ -141,8 +141,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <LanguageProvider>
+        <Outlet />
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
+

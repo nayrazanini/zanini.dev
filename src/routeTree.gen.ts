@@ -24,7 +24,6 @@ import { Route as ProjetosFinancasPessoaisRouteImport } from './routes/projetos.
 import { Route as ProjetosMeuEspacoRouteImport } from './routes/projetos.meu-espaco'
 import { Route as ProjetosFinancasPessoaisIndexRouteImport } from './routes/projetos.financas-pessoais.index'
 import { Route as ProjetosFinancasPessoaisAppRouteImport } from './routes/projetos.financas-pessoais.app'
-import { Route as ProjetosRastreadorEstudoDisciplinaAppRouteImport } from './routes/projetos.rastreador-estudo-disciplina.app'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -104,12 +103,6 @@ const ProjetosFinancasPessoaisAppRoute =
     path: '/app',
     getParentRoute: () => ProjetosFinancasPessoaisRoute,
   } as any)
-const ProjetosRastreadorEstudoDisciplinaAppRoute =
-  ProjetosRastreadorEstudoDisciplinaAppRouteImport.update({
-    id: '/rastreador-estudo-disciplina/app',
-    path: '/rastreador-estudo-disciplina/app',
-    getParentRoute: () => ProjetosRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -126,7 +119,6 @@ export interface FileRoutesByFullPath {
   '/artigos/': typeof ArtigosIndexRoute
   '/projetos/': typeof ProjetosIndexRoute
   '/projetos/financas-pessoais/app': typeof ProjetosFinancasPessoaisAppRoute
-  '/projetos/rastreador-estudo-disciplina/app': typeof ProjetosRastreadorEstudoDisciplinaAppRoute
   '/projetos/financas-pessoais/': typeof ProjetosFinancasPessoaisIndexRoute
 }
 export interface FileRoutesByTo {
@@ -142,7 +134,6 @@ export interface FileRoutesByTo {
   '/artigos': typeof ArtigosIndexRoute
   '/projetos': typeof ProjetosIndexRoute
   '/projetos/financas-pessoais/app': typeof ProjetosFinancasPessoaisAppRoute
-  '/projetos/rastreador-estudo-disciplina/app': typeof ProjetosRastreadorEstudoDisciplinaAppRoute
   '/projetos/financas-pessoais': typeof ProjetosFinancasPessoaisIndexRoute
 }
 export interface FileRoutesById {
@@ -161,7 +152,6 @@ export interface FileRoutesById {
   '/artigos/': typeof ArtigosIndexRoute
   '/projetos/': typeof ProjetosIndexRoute
   '/projetos/financas-pessoais/app': typeof ProjetosFinancasPessoaisAppRoute
-  '/projetos/rastreador-estudo-disciplina/app': typeof ProjetosRastreadorEstudoDisciplinaAppRoute
   '/projetos/financas-pessoais/': typeof ProjetosFinancasPessoaisIndexRoute
 }
 export interface FileRouteTypes {
@@ -181,7 +171,6 @@ export interface FileRouteTypes {
     | '/artigos/'
     | '/projetos/'
     | '/projetos/financas-pessoais/app'
-    | '/projetos/rastreador-estudo-disciplina/app'
     | '/projetos/financas-pessoais/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -197,7 +186,6 @@ export interface FileRouteTypes {
     | '/artigos'
     | '/projetos'
     | '/projetos/financas-pessoais/app'
-    | '/projetos/rastreador-estudo-disciplina/app'
     | '/projetos/financas-pessoais'
   id:
     | '__root__'
@@ -215,7 +203,6 @@ export interface FileRouteTypes {
     | '/artigos/'
     | '/projetos/'
     | '/projetos/financas-pessoais/app'
-    | '/projetos/rastreador-estudo-disciplina/app'
     | '/projetos/financas-pessoais/'
   fileRoutesById: FileRoutesById
 }
@@ -338,13 +325,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjetosFinancasPessoaisAppRouteImport
       parentRoute: typeof ProjetosFinancasPessoaisRoute
     }
-    '/projetos/rastreador-estudo-disciplina/app': {
-      id: '/projetos/rastreador-estudo-disciplina/app'
-      path: '/rastreador-estudo-disciplina/app'
-      fullPath: '/projetos/rastreador-estudo-disciplina/app'
-      preLoaderRoute: typeof ProjetosRastreadorEstudoDisciplinaAppRouteImport
-      parentRoute: typeof ProjetosRoute
-    }
   }
 }
 
@@ -369,7 +349,6 @@ interface ProjetosRouteChildren {
   ProjetosFinancasPessoaisRoute: typeof ProjetosFinancasPessoaisRouteWithChildren
   ProjetosMeuEspacoRoute: typeof ProjetosMeuEspacoRoute
   ProjetosIndexRoute: typeof ProjetosIndexRoute
-  ProjetosRastreadorEstudoDisciplinaAppRoute: typeof ProjetosRastreadorEstudoDisciplinaAppRoute
 }
 
 const ProjetosRouteChildren: ProjetosRouteChildren = {
@@ -377,8 +356,6 @@ const ProjetosRouteChildren: ProjetosRouteChildren = {
   ProjetosFinancasPessoaisRoute: ProjetosFinancasPessoaisRouteWithChildren,
   ProjetosMeuEspacoRoute: ProjetosMeuEspacoRoute,
   ProjetosIndexRoute: ProjetosIndexRoute,
-  ProjetosRastreadorEstudoDisciplinaAppRoute:
-    ProjetosRastreadorEstudoDisciplinaAppRoute,
 }
 
 const ProjetosRouteWithChildren = ProjetosRoute._addFileChildren(

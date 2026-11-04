@@ -1,176 +1,95 @@
-
 import { Link } from "@tanstack/react-router";
 import { PROJETOS } from "@/data/projetos";
 import { useLanguage } from "@/context/LanguageContext";
 
-type Item = {
-  n: string;
-  title: string;
-  tagline: string;
-  description: string;
-  tags: string[];
-  slug?: string;
-  path?: string;
-  repo?: string;
-  featured?: boolean;
-};
-
 const PROJECT_TRANSLATIONS: Record<
   string,
-  {
-    title?: string;
-    tagline: string;
-    description: string;
-  }
+  { title: string; tagline: string; description: string }
 > = {
   "financas-pessoais": {
     title: "PERSONAL FINANCE TRACKER",
     tagline: "Full-stack application + SQL Server",
     description:
-      "A personal finance management application designed to organize, monitor, and track financial information through a practical and intuitive experience.",
+      "A personal finance management application designed to organize and monitor financial information through a practical experience.",
   },
-
   "pr-gerencia-menu": {
+    title: "PR_GERENCIA_MENU",
     tagline: "Dynamic menu manager in T-SQL",
     description:
-      "A SQL Server procedure designed to dynamically create menu structures for different systems. It handles hierarchical menus, permission profiles, and transactional operations, with a focus on consistency and concurrency.",
+      "A SQL Server procedure that dynamically creates menu structures for different systems, handling hierarchical menus, access profiles, and transactional operations.",
   },
-
-  "estoque-sql-server": {
-    tagline: "Inventory management with SQL Server",
-    description:
-      "A relational inventory management project developed with SQL Server, exploring database modeling, relationships, stored procedures, and T-SQL scripts for stock movements and product queries.",
-  },
-
   "ponto-sql-server": {
+    title: "TIME TRACKING SYSTEM",
     tagline: "Time tracking system with SQL Server",
     description:
-      "A time tracking management project using SQL Server, with procedures and scripts for employee records, clock-in and clock-out operations, and report generation.",
+      "A SQL Server project for employee records, clock-in and clock-out operations, business rules, and attendance reports.",
   },
-
-  "rastreador-estudo-disciplina": {
-    tagline: "Study session tracker",
+  "estoque-sql-server": {
+    title: "INVENTORY MANAGEMENT",
+    tagline: "Inventory management with SQL Server",
     description:
-      "An application for tracking study sessions, using SQL Server concepts such as gaps and islands to calculate study streaks, organize spaced reviews, and monitor weekly goals.",
-  },
-
-  "nayra-dev": {
-    tagline: "Personal portfolio",
-    description:
-      "A personal portfolio developed to present my professional journey, projects, and technical skills. The website evolved from an initial static version into a more complete portfolio.",
-  },
-
-  autoresumo: {
-    tagline: "Text summarization tool",
-    description:
-      "A JavaScript tool that processes text and generates summaries in Markdown format, exploring text manipulation, automation, and practical programming concepts.",
+      "A relational inventory project using SQL Server, with data modeling, relationships, stored procedures, and T-SQL scripts for stock movements.",
   },
 };
 
-const FINANCIAL_PROJECT: Item = {
-  n: "01",
-  title: "CONTROLE FINANCEIRO",
-  tagline: "Aplicação full-stack + SQL Server",
-  description:
-    "Projeto de aplicação financeira pessoal, com uma experiência prática para organizar e acompanhar informações financeiras.",
-  tags: ["SQL Server", "T-SQL", "Next.js"],
-  path: "/projetos/financas-pessoais",
-  slug: "financas-pessoais",
-};
-
-function ProjectCard({
-  item,
-  en,
-}: {
-  item: Item;
+type ProjectCardProps = {
+  project: (typeof PROJETOS)[number];
   en: boolean;
-}) {
-  const translation =
-    en && item.slug
-      ? PROJECT_TRANSLATIONS[item.slug]
-      : undefined;
+};
+
+function ProjectCard({ project, en }: ProjectCardProps) {
+  const translation = en ? PROJECT_TRANSLATIONS[project.slug] : undefined;
 
   return (
-    <article
-      className={`
-        group flex h-full flex-col rounded-2xl border p-6
-        bg-[#09090b]
-        transition-all duration-300
-        hover:-translate-y-1 hover:shadow-xl
-        ${
-          item.featured
-            ? "border-purple-500/40 hover:border-purple-400/70"
-            : "border-white/10 hover:border-purple-500/40"
-        }
-      `}
-    >
+    <article className="group flex h-full flex-col rounded-2xl border border-border/60 bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-terracotta/50 hover:shadow-xl">
       <div className="mb-6 flex items-center justify-between gap-3">
-        <span className="font-display text-lg text-purple-500">
-          {item.n}
-        </span>
-
-        {item.featured && (
-          <span className="text-[10px] uppercase tracking-[0.2em] text-purple-400">
+        <span className="font-display text-lg text-terracotta">{project.n}</span>
+        {project.slug === "pr-gerencia-menu" && (
+          <span className="text-[10px] uppercase tracking-[0.2em] text-terracotta">
             {en ? "Featured project" : "Projeto em destaque"}
           </span>
         )}
       </div>
 
       <div className="flex-1">
-        <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-500">
-          {translation?.tagline ?? item.tagline}
+        <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+          {translation?.tagline ?? project.tagline}
         </p>
-
-        <h3 className="mb-4 text-xl font-semibold tracking-tight text-white transition-colors group-hover:text-purple-300">
-          {translation?.title ?? item.title}
+        <h3 className="mb-4 text-xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-terracotta">
+          {translation?.title ?? project.title}
         </h3>
-
-        <p className="text-sm leading-7 text-zinc-400">
-          {translation?.description ?? item.description}
+        <p className="text-sm leading-7 text-foreground/75">
+          {translation?.description ?? project.description}
         </p>
       </div>
 
       <div className="mt-6 flex flex-wrap gap-2">
-        {item.tags.map((tag) => (
+        {project.tags.slice(0, 5).map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-[10px] text-zinc-400"
+            className="rounded-full border border-border/60 bg-paper-deep px-3 py-1.5 font-mono text-[10px] text-muted-foreground"
           >
             {tag}
           </span>
         ))}
       </div>
 
-      <div className="mt-7 flex flex-wrap items-center gap-5 border-t border-white/10 pt-5">
-        {item.path ? (
-          <Link
-            to="/projetos/financas-pessoais"
-            className="text-xs font-semibold text-white transition-colors hover:text-purple-400"
-          >
-            {en ? "View project" : "Conhecer projeto"}{" "}
-            <span aria-hidden="true">↗</span>
-          </Link>
-        ) : item.slug ? (
-          <Link
-            to="/projetos/$slug"
-            params={{ slug: item.slug }}
-            className="text-xs font-semibold text-white transition-colors hover:text-purple-400"
-          >
-            {en ? "View project" : "Conhecer projeto"}{" "}
-            <span aria-hidden="true">↗</span>
-          </Link>
-        ) : null}
-
-        {item.repo && (
-          <a
-            href={item.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-zinc-500 transition-colors hover:text-purple-400"
-          >
-            GitHub <span aria-hidden="true">↗</span>
-          </a>
-        )}
+      <div className="mt-7 flex flex-wrap items-center gap-5 border-t border-border/60 pt-5">
+        <Link
+          to="/projetos/$slug"
+          params={{ slug: project.slug }}
+          className="text-xs font-semibold text-foreground transition-colors hover:text-terracotta"
+        >
+          {en ? "View project" : "Conhecer projeto"} <span aria-hidden="true">↗</span>
+        </Link>
+        <a
+          href={project.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-muted-foreground transition-colors hover:text-terracotta"
+        >
+          GitHub <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </article>
   );
@@ -180,61 +99,39 @@ export function ProjectsCarousel() {
   const { language } = useLanguage();
   const en = language === "en";
 
-  const items: Item[] = [
-    FINANCIAL_PROJECT,
-
-    ...PROJETOS.map((project) => ({
-      n: project.n,
-      title: project.title,
-      tagline: project.tagline,
-      description: project.description,
-      tags: project.tags,
-      slug: project.slug,
-      repo: project.repo,
-      featured: project.slug === "pr-gerencia-menu",
-    })),
-  ].sort((a, b) => a.n.localeCompare(b.n));
+  const items = [...PROJETOS].sort((a, b) => a.n.localeCompare(b.n));
 
   return (
     <section
       id="projetos"
-      className="scroll-mt-24 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 pt-10 md:pt-14 pb-10 md:pb-14"
+      className="mx-auto w-full max-w-7xl scroll-mt-24 px-5 pb-10 pt-10 sm:px-8 md:pb-14 md:pt-14 lg:px-10"
     >
-      <div className="mb-10 grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-7 lg:gap-14">
+      <div className="mb-10 grid grid-cols-1 gap-7 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-purple-500 mb-3">
-            {en
-              ? "Projects, Ideas & Solutions"
-              : "Projetos, ideias e soluções"}
+          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-terracotta">
+            {en ? "Projects, Ideas & Solutions" : "Projetos, ideias e soluções"}
           </p>
-
-          <h2 className="font-moderno text-4xl text-white sm:text-5xl md:text-5xl">
+          <h2 className="font-moderno text-4xl text-foreground sm:text-5xl">
             {en ? "Featured Projects" : "Projetos em destaque"}
-            <span className="text-purple-500">.</span>
+            <span className="text-terracotta">.</span>
           </h2>
         </div>
 
         <div className="flex flex-col justify-between gap-5">
-          <p className="max-w-3xl text-sm md:text-base leading-relaxed text-zinc-400">
+          <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">
             {en
-              ? "A collection of projects built around practical challenges, learning experiences, and real-world needs. These solutions explore application development, databases, automation, and business logic, focusing on turning problems into functional solutions."
-              : "Reúno projetos desenvolvidos a partir de desafios práticos, estudos e necessidades reais, explorando diferentes possibilidades da tecnologia. As soluções envolvem desenvolvimento de aplicações, banco de dados, automação e lógica de negócio, com foco em transformar problemas em soluções funcionais."}
+              ? "A collection of projects built around practical challenges, learning experiences, and real-world needs. These solutions explore application development, databases, automation, and business logic."
+              : "Reúno projetos desenvolvidos a partir de desafios práticos, estudos e necessidades reais. As soluções envolvem desenvolvimento de aplicações, banco de dados, automação e lógica de negócio, com foco em transformar problemas em soluções funcionais."}
           </p>
-
-          <span className="self-end whitespace-nowrap font-mono text-xs text-zinc-500">
-            {String(items.length).padStart(2, "0")}{" "}
-            {en ? "projects" : "projetos"}
+          <span className="self-end whitespace-nowrap font-mono text-xs text-muted-foreground">
+            {String(items.length).padStart(2, "0")} {en ? "projects" : "projetos"}
           </span>
         </div>
       </div>
 
-      <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-        {items.map((item) => (
-          <ProjectCard
-            key={item.n}
-            item={item}
-            en={en}
-          />
+      <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
+        {items.map((project) => (
+          <ProjectCard key={project.slug} project={project} en={en} />
         ))}
       </div>
     </section>
