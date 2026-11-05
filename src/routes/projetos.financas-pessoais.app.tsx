@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
 import { SiteLayout } from "@/components/SiteLayout";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, supabaseConfigured } from "@/integrations/supabase/client";
 import {
   brl,
   dataBR,
@@ -73,6 +73,10 @@ function FinancasApp() {
   const [carregandoSessao, setCarregandoSessao] = useState(true);
 
   useEffect(() => {
+    if (!supabaseConfigured) {
+      setCarregandoSessao(false);
+      return;
+    }
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
@@ -105,7 +109,12 @@ function FinancasApp() {
           </p>
         </header>
 
-        {carregandoSessao ? (
+        {!supabaseConfigured ? (
+          <p className="mt-10 max-w-md rounded-2xl border border-border/60 bg-card p-6 text-sm text-muted-foreground">
+            O app está temporariamente indisponível. Volte em instantes ou veja o
+            código no GitHub.
+          </p>
+        ) : carregandoSessao ? (
           <p className="mt-10 text-sm text-muted-foreground">Carregando…</p>
         ) : session ? (
           <Painel session={session} />

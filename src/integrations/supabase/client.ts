@@ -54,6 +54,11 @@ function createSupabaseClient() {
   });
 }
 
+// Indica se as variáveis do Supabase foram configuradas (usado para exibir um aviso amigável).
+export const supabaseConfigured = Boolean(
+  import.meta.env["VITE_SUPABASE_URL"] && import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"],
+);
+
 let _supabase: ReturnType<typeof createSupabaseClient> | undefined;
 
 // Uso: import { supabase } from "@/integrations/supabase/client";

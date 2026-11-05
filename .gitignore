@@ -1,1 +1,14 @@
 node_modules
+dist
+.output
+.vercel
+.nitro
+.tanstack
+.vinxi
+*.log
+.DS_Store
+
+# Variáveis de ambiente (nunca vão para o GitHub)
+.env
+.env.*
+!.env.example

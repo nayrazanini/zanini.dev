@@ -1,4 +1,4 @@
-# web-showcase-zenith — Portfólio de Náyra Zanini
+# zanini.dev — Portfólio de Náyra Zanini
 
 Site em React + TanStack Start (Vite), Tailwind CSS v4 e Supabase (usado só no projeto "Finanças Pessoais").
 
@@ -25,14 +25,15 @@ Na hospedagem, cadastre as mesmas variáveis no painel do provedor.
 ## Supabase (Finanças Pessoais)
 
 1. Crie um projeto em https://supabase.com.
-2. Rode, em ordem, os arquivos de `supabase/migrations/` no SQL Editor.
+2. No SQL Editor, cole e rode o arquivo `supabase/setup.sql` (cria tabelas, RLS, triggers e o onboarding automático).
 3. Em Authentication > URL Configuration, coloque a URL do site em *Site URL* e *Redirect URLs*.
 4. (Opcional) Para o botão "Entrar com Google": Authentication > Providers > Google.
 
 ## Deploy
 
 O build usa o Nitro, que detecta a plataforma automaticamente (Vercel, Netlify, Cloudflare).
-Conecte o repositório ao provedor, defina as variáveis acima e use `npm run build`.
+Na Vercel: *Add New > Project*, escolha este repositório, cadastre as 3 variáveis em *Environment Variables* e clique em *Deploy* (o Vite/Nitro é detectado sozinho). Depois, cadastre o domínio em *Settings > Domains*.
+**Importante:** as variáveis `VITE_*` entram no build; se alterá-las, faça um novo deploy.
 Para forçar um destino: `NITRO_PRESET=cloudflare_pages npm run build`.
 
 ## Arquivos que você precisa manter em `public/`
