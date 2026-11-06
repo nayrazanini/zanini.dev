@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
+import { useLanguage } from "@/context/LanguageContext";
 import { ARTIGOS, getArtigo } from "@/data/artigos";
+import { ARTIGOS_EN, dataEn } from "@/data/artigos.en";
 
 export const Route = createFileRoute("/artigos/$slug")({
   loader: ({ params }) => {
@@ -34,23 +36,28 @@ export const Route = createFileRoute("/artigos/$slug")({
 });
 
 function ArtigoNotFound() {
+  const { language } = useLanguage();
+  const en = language === "en";
+
   return (
     <SiteLayout>
       <section className="mx-auto max-w-3xl px-6 py-24 text-center">
         <p className="text-sm uppercase tracking-[0.2em] text-terracotta font-medium">
-          Artigos
+          {en ? "Articles" : "Artigos"}
         </p>
         <h1 className="mt-6 font-display text-4xl md:text-5xl font-medium">
-          Artigo não encontrado.
+          {en ? "Article not found." : "Artigo não encontrado."}
         </h1>
         <p className="mt-4 text-muted-foreground">
-          Talvez ele tenha sido movido. Veja todos os artigos disponíveis.
+          {en
+            ? "Maybe it was moved. See all available articles."
+            : "Talvez ele tenha sido movido. Veja todos os artigos disponíveis."}
         </p>
         <Link
           to="/artigos"
           className="mt-8 inline-flex items-center gap-2 text-terracotta underline underline-offset-4"
         >
-          ← Ver todos os artigos
+          {en ? "← See all articles" : "← Ver todos os artigos"}
         </Link>
       </section>
     </SiteLayout>
@@ -58,12 +65,17 @@ function ArtigoNotFound() {
 }
 
 function ArtigoPage() {
-  const { artigo } = Route.useLoaderData();
+  const { artigo: artigoOriginal } = Route.useLoaderData();
+  const { language } = useLanguage();
+  const en = language === "en";
+  const traduzir = <T extends { slug: string }>(a: T) =>
+    en ? { ...a, ...ARTIGOS_EN[a.slug] } : a;
+  const artigo = traduzir(artigoOriginal);
   const currentIndex = ARTIGOS.findIndex((a) => a.slug === artigo.slug);
-  const prev = currentIndex > 0 ? ARTIGOS[currentIndex - 1] : null;
+  const prev = currentIndex > 0 ? traduzir(ARTIGOS[currentIndex - 1]) : null;
   const next =
     currentIndex >= 0 && currentIndex < ARTIGOS.length - 1
-      ? ARTIGOS[currentIndex + 1]
+      ? traduzir(ARTIGOS[currentIndex + 1])
       : null;
 
   return (
@@ -73,7 +85,7 @@ function ArtigoPage() {
           to="/artigos"
           className="text-sm text-muted-foreground hover:text-terracotta transition-colors"
         >
-          ← Artigos
+          {en ? "← Articles" : "← Artigos"}
         </Link>
 
         <header className="mt-5 sm:mt-6 pb-6 sm:pb-8 border-b border-border/60">
@@ -84,7 +96,7 @@ function ArtigoPage() {
             {artigo.title}
           </h1>
           <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground font-mono">
-            Publicado em {artigo.date}
+            {en ? `Published on ${dataEn(artigo.publishedAt)}` : `Publicado em ${artigo.date}`}
           </p>
           {artigo.externalUrl && (
             <a
@@ -93,7 +105,7 @@ function ArtigoPage() {
               rel="noopener noreferrer"
               className="mt-2 inline-flex items-center gap-1 text-xs sm:text-sm text-terracotta underline underline-offset-4 hover:opacity-80 transition-opacity"
             >
-              Ler também no LinkedIn ↗
+              {en ? "Also read on LinkedIn (in Portuguese) ↗" : "Ler também no LinkedIn ↗"}
             </a>
           )}
         </header>
@@ -117,7 +129,7 @@ function ArtigoPage() {
                 className="p-5 rounded-2xl border border-border/60 hover:border-terracotta/50 transition-colors"
               >
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  ← Anterior
+                  {en ? "← Previous" : "← Anterior"}
                 </p>
                 <p className="mt-2 font-display text-lg group-hover:text-terracotta">
                   {prev.title}
@@ -133,7 +145,7 @@ function ArtigoPage() {
                 className="p-5 rounded-2xl border border-border/60 hover:border-terracotta/50 transition-colors text-right"
               >
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  Próximo →
+                  {en ? "Next →" : "Próximo →"}
                 </p>
                 <p className="mt-2 font-display text-lg">{next.title}</p>
               </Link>

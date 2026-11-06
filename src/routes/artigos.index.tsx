@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
+import { useLanguage } from "@/context/LanguageContext";
 import { ARTIGOS } from "@/data/artigos";
+import { ARTIGOS_EN, dataEn } from "@/data/artigos.en";
 
 export const Route = createFileRoute("/artigos/")({
   head: () => ({
@@ -28,27 +30,31 @@ export const Route = createFileRoute("/artigos/")({
 void notFound;
 
 function ArtigosPage() {
+  const { language } = useLanguage();
+  const en = language === "en";
+
   return (
     <SiteLayout>
       <section className="mx-auto max-w-4xl px-5 sm:px-6 pt-12 sm:pt-20 pb-8 sm:pb-12">
         <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-terracotta font-medium">
-          Artigos
+          {en ? "Articles" : "Artigos"}
         </p>
         <h1 className="mt-4 sm:mt-6 font-display text-3xl sm:text-5xl md:text-6xl font-medium leading-tight">
-          Escrevendo o que{" "}
-          <span className="italic text-terracotta">estudo</span>.
+          {en ? "Writing what I " : "Escrevendo o que "}
+          <span className="italic text-terracotta">{en ? "study" : "estudo"}</span>.
         </h1>
         <p className="mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
-          Artigos sobre tecnologia, dados e as experiências que moldam minha
-          trajetória — da pós-graduação em Engenharia de Software (UNIP) à
-          rotina de estudos e ao desenvolvimento pessoal. Escrever é a forma que
-          encontrei de consolidar o aprendizado.
+          {en
+            ? "Articles about technology, data and the experiences that shape my path — from the postgraduate program in Software Engineering (UNIP) to my study routine and personal development. Writing is how I found to consolidate what I learn."
+            : "Artigos sobre tecnologia, dados e as experiências que moldam minha trajetória — da pós-graduação em Engenharia de Software (UNIP) à rotina de estudos e ao desenvolvimento pessoal. Escrever é a forma que encontrei de consolidar o aprendizado."}
         </p>
       </section>
 
       <section className="mx-auto max-w-4xl px-5 sm:px-6 pb-16 sm:pb-24">
         <ul className="divide-y divide-border/60 border-y border-border/60">
-          {ARTIGOS.map((a) => (
+          {ARTIGOS.map((original) => {
+            const a = en ? { ...original, ...ARTIGOS_EN[original.slug] } : original;
+            return (
             <li key={a.slug}>
               <Link
                 to="/artigos/$slug"
@@ -67,11 +73,12 @@ function ArtigosPage() {
                   </p>
                 </div>
                 <span className="text-[11px] sm:text-xs font-mono text-terracotta whitespace-nowrap">
-                  {a.date} →
+                  {en ? dataEn(a.publishedAt) : a.date} →
                 </span>
               </Link>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </section>
     </SiteLayout>

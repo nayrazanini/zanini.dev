@@ -1,8 +1,10 @@
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 import { useLanguage } from "@/context/LanguageContext";
+import { ARTIGOS } from "@/data/artigos";
+import { ARTIGOS_EN, dataEn } from "@/data/artigos.en";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,6 +25,11 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
+
+// Os 3 artigos mais recentes, mostrados na seção "Artigos" da página inicial.
+const ULTIMOS_ARTIGOS = [...ARTIGOS]
+  .sort((x, y) => y.publishedAt.localeCompare(x.publishedAt))
+  .slice(0, 3);
 
 const SECTION_TITLE =
   "font-moderno text-3xl md:text-4xl tracking-[0.08em] leading-tight text-ink";
@@ -414,33 +421,47 @@ function IndexContent() {
               </p>
             </div>
 
-            <article className="border border-border/60 rounded-xl p-5 md:p-6">
-              <p className="text-[11px] uppercase tracking-[0.15em] text-terracotta mb-2">
-                {en ? "Software Engineering" : "Engenharia de Software"}
-              </p>
+            <div className="grid gap-4">
+              {ULTIMOS_ARTIGOS.map((original) => {
+                const artigo = en ? { ...original, ...ARTIGOS_EN[original.slug] } : original;
+                return (
+                  <Link
+                    key={artigo.slug}
+                    to="/artigos/$slug"
+                    params={{ slug: artigo.slug }}
+                    className="group block border border-border/60 rounded-xl p-5 md:p-6 hover:border-terracotta/50 transition-colors"
+                  >
+                    <p className="text-[11px] uppercase tracking-[0.15em] text-terracotta mb-2">
+                      {artigo.subject}
+                    </p>
 
-              <h3 className="text-lg md:text-xl font-semibold text-ink leading-snug">
-                {en
-                  ? "Evolution, Quality, and Challenges in Software Engineering"
-                  : "Evolução, Qualidade e Desafios da Engenharia de Software"}
-              </h3>
+                    <h3 className="text-lg md:text-xl font-semibold text-ink leading-snug group-hover:text-terracotta transition-colors">
+                      {artigo.title}
+                    </h3>
 
-              <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
-                {en
-                  ? "A reflection on the evolution of software engineering, the importance of quality, and the challenges involved in developing technological solutions."
-                  : "Uma reflexão sobre a evolução da engenharia de software, a importância da qualidade e os desafios envolvidos no desenvolvimento de soluções tecnológicas."}
-              </p>
+                    <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground line-clamp-3">
+                      {artigo.summary}
+                    </p>
 
-              <p className="mt-4 text-xs text-muted-foreground">
-                {en ? "External publication" : "Publicação externa"}
-              </p>
+                    <p className="mt-4 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                      <span className="font-mono">
+                        {en ? dataEn(artigo.publishedAt) : artigo.date}
+                      </span>
+                      <span className="text-terracotta">
+                        {en ? "Read article →" : "Ler artigo →"}
+                      </span>
+                    </p>
+                  </Link>
+                );
+              })}
 
-              <span className="inline-flex mt-3 text-xs text-muted-foreground">
-                {en
-                  ? "Reading link being updated."
-                  : "Link de leitura em atualização."}
-              </span>
-            </article>
+              <Link
+                to="/artigos"
+                className="inline-flex text-sm text-terracotta underline underline-offset-4 hover:opacity-80 transition-opacity"
+              >
+                {en ? "View all articles →" : "Ver todos os artigos →"}
+              </Link>
+            </div>
           </div>
         </div>
       </section>
