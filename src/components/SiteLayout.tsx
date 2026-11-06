@@ -75,17 +75,8 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
             ))}
 
             <a
-              href="https://github.com/nayrazanini"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="whitespace-nowrap text-xs sm:text-sm text-muted-foreground hover:text-terracotta transition-colors"
-            >
-              GitHub ↗
-            </a>
-
-            <a
               href="/contato"
-              className="whitespace-nowrap text-xs sm:text-sm text-muted-foreground hover:text-ink transition-colors"
+              className="whitespace-nowrap text-xs sm:text-sm text-ink border border-terracotta/70 rounded-full px-3 py-1 hover:bg-terracotta/10 hover:border-terracotta transition-colors"
             >
               {en ? "Contact" : "Contato"}
             </a>

@@ -1,6 +1,7 @@
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
+import { Mail, MessageCircle } from "lucide-react";
 import { ArtigosCarousel } from "@/components/ArtigosCarousel";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 import { useLanguage } from "@/context/LanguageContext";
@@ -427,6 +428,70 @@ function IndexContent() {
               })}
             />
           </div>
+        </div>
+      </section>
+
+      {/* CONTATO */}
+      <section id="contato" className="scroll-mt-24 border-b border-border/60">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 py-10 md:py-12">
+          <div className="grid lg:grid-cols-[0.75fr_1.25fr] gap-7 lg:gap-14 items-start">
+            <div>
+              <p className={SECTION_LABEL}>
+                {en ? "Let's talk" : "Vamos conversar"}
+              </p>
+
+              <h2 className={SECTION_TITLE}>
+                {en ? "Contact" : "Contato"}
+              </h2>
+
+              <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
+                {en
+                  ? "Open to opportunities in systems analysis and support, SQL Server, data and QA."
+                  : "Aberta a oportunidades em análise e sustentação de sistemas, SQL Server, dados e QA."}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              {[
+                { label: "E-mail", value: "zanini.n@outlook.com.br", href: "mailto:zanini.n@outlook.com.br", icon: Mail },
+                {
+                  label: "WhatsApp",
+                  value: "(11) 9.8136-8778",
+                  href: `https://wa.me/5511981368778?text=${encodeURIComponent(
+                    en
+                      ? "Hi Náyra! I found your portfolio and would like to talk."
+                      : "Olá, Náyra! Vi seu portfólio e gostaria de conversar.",
+                  )}`,
+                  icon: MessageCircle,
+                },
+                { label: "LinkedIn", value: "nayra-zanini", href: "https://linkedin.com/in/nayra-zanini/" },
+                { label: "GitHub", value: "nayrazanini", href: "https://github.com/nayrazanini" },
+                { label: "Instagram", value: "@nazanini_", href: "https://instagram.com/nazanini_" },
+              ].map((c) => (
+                <a
+                  key={c.label}
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  className="group min-w-[170px] rounded-xl border border-border/60 px-4 py-3 hover:border-terracotta/60 transition-colors"
+                >
+                  <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] text-terracotta">
+                    {c.icon ? <c.icon className="h-3.5 w-3.5" aria-hidden="true" /> : null}
+                    {c.label}
+                  </p>
+                  <p className="mt-1 text-sm text-ink group-hover:text-terracotta transition-colors break-all">
+                    {c.value}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-6">
+            <a href="/contato" className="text-sm text-terracotta underline underline-offset-4 hover:opacity-80 transition-opacity">
+              {en ? "More contact options and résumé →" : "Mais opções de contato e currículo →"}
+            </a>
+          </p>
         </div>
       </section>
     </>
