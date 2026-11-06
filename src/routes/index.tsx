@@ -1,6 +1,7 @@
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
+import { ArtigosCarousel } from "@/components/ArtigosCarousel";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 import { useLanguage } from "@/context/LanguageContext";
 import { ARTIGOS_TODOS as ARTIGOS, ARTIGOS_EN_TODOS as ARTIGOS_EN, dataEn } from "@/data/artigos.todos";
@@ -25,10 +26,10 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// Os 3 artigos mais recentes, mostrados na seção "Artigos" da página inicial.
+// Os 6 artigos mais recentes (carrossel automático), mostrados na seção "Artigos" da página inicial.
 const ULTIMOS_ARTIGOS = [...ARTIGOS]
   .sort((x, y) => y.publishedAt.localeCompare(x.publishedAt))
-  .slice(0, 3);
+  .slice(0, 6);
 
 const SECTION_TITLE =
   "font-moderno text-3xl md:text-4xl tracking-[0.08em] leading-tight text-ink";
@@ -420,47 +421,19 @@ function IndexContent() {
               </p>
             </div>
 
-            <div className="grid gap-4">
-              {ULTIMOS_ARTIGOS.map((original) => {
+            <ArtigosCarousel
+              en={en}
+              artigos={ULTIMOS_ARTIGOS.map((original) => {
                 const artigo = en ? { ...original, ...ARTIGOS_EN[original.slug] } : original;
-                return (
-                  <Link
-                    key={artigo.slug}
-                    to="/artigos/$slug"
-                    params={{ slug: artigo.slug }}
-                    className="group block border border-border/60 rounded-xl p-5 md:p-6 hover:border-terracotta/50 transition-colors"
-                  >
-                    <p className="text-[11px] uppercase tracking-[0.15em] text-terracotta mb-2">
-                      {artigo.subject}
-                    </p>
-
-                    <h3 className="text-lg md:text-xl font-semibold text-ink leading-snug group-hover:text-terracotta transition-colors">
-                      {artigo.title}
-                    </h3>
-
-                    <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground line-clamp-3">
-                      {artigo.summary}
-                    </p>
-
-                    <p className="mt-4 flex items-center justify-between gap-3 text-xs text-muted-foreground">
-                      <span className="font-mono">
-                        {en ? dataEn(artigo.publishedAt) : artigo.date}
-                      </span>
-                      <span className="text-terracotta">
-                        {en ? "Read article →" : "Ler artigo →"}
-                      </span>
-                    </p>
-                  </Link>
-                );
+                return {
+                  slug: artigo.slug,
+                  title: artigo.title,
+                  subject: artigo.subject,
+                  summary: artigo.summary,
+                  dataLabel: en ? dataEn(artigo.publishedAt) : artigo.date,
+                };
               })}
-
-              <Link
-                to="/artigos"
-                className="inline-flex text-sm text-terracotta underline underline-offset-4 hover:opacity-80 transition-opacity"
-              >
-                {en ? "View all articles →" : "Ver todos os artigos →"}
-              </Link>
-            </div>
+            />
           </div>
         </div>
       </section>

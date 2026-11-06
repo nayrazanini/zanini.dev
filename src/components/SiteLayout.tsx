@@ -1,9 +1,9 @@
 
 import type { ReactNode, MouseEvent } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { BackToTop } from "@/components/BackToTop";
 
 const SOCIAL_LINKS = [
-  { label: "GitHub", href: "https://github.com/nayrazanini" },
   { label: "LinkedIn", href: "https://linkedin.com/in/nayra-zanini/" },
   { label: "Instagram", href: "https://instagram.com/nazanini_" },
 ] as const;
@@ -72,6 +72,15 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
                 {item.label}
               </a>
             ))}
+
+            <a
+              href="https://github.com/nayrazanini"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whitespace-nowrap text-xs sm:text-sm text-muted-foreground hover:text-terracotta transition-colors"
+            >
+              GitHub ↗
+            </a>
 
             <a
               href="/CV_Nayra_Zanini.pdf"
@@ -152,6 +161,8 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
           </div>
         </div>
       </footer>
+
+      <BackToTop />
     </div>
   );
 }
