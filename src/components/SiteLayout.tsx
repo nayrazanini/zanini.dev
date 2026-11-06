@@ -3,11 +3,6 @@ import type { ReactNode, MouseEvent } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { BackToTop } from "@/components/BackToTop";
 
-const SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "https://linkedin.com/in/nayra-zanini/" },
-  { label: "Instagram", href: "https://instagram.com/nazanini_" },
-] as const;
-
 export function SiteLayout({ children }: { children: ReactNode }) {
   return <SiteLayoutContent>{children}</SiteLayoutContent>;
 }
@@ -89,6 +84,13 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
             </a>
 
             <a
+              href="/contato"
+              className="whitespace-nowrap text-xs sm:text-sm text-muted-foreground hover:text-ink transition-colors"
+            >
+              {en ? "Contact" : "Contato"}
+            </a>
+
+            <a
               href="/CV_Nayra_Zanini.pdf"
               target="_blank"
               rel="noopener noreferrer"
@@ -156,19 +158,12 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
               Think. Query. Build.
             </p>
 
-            <nav className="flex items-center gap-5">
-              {SOCIAL_LINKS.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-terracotta transition-colors"
-                >
-                  {item.label} ↗
-                </a>
-              ))}
-            </nav>
+            <a
+              href="/contato"
+              className="text-sm text-muted-foreground hover:text-terracotta transition-colors"
+            >
+              {en ? "Contact →" : "Contato →"}
+            </a>
           </div>
         </div>
       </footer>
