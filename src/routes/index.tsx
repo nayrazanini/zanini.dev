@@ -496,12 +496,6 @@ function IndexContent() {
               ))}
             </div>
           </div>
-
-          <p className="mt-6">
-            <a href="/contato" className="text-sm text-terracotta underline underline-offset-4 hover:opacity-80 transition-opacity">
-              {en ? "More contact options and résumé →" : "Mais opções de contato e currículo →"}
-            </a>
-          </p>
         </div>
       </section>
     </>

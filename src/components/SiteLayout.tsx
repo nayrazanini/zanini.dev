@@ -139,13 +139,6 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
             <p className="text-xs text-muted-foreground">
               Think. Query. Build.
             </p>
-
-            <a
-              href="/contato"
-              className="text-sm text-muted-foreground hover:text-terracotta transition-colors"
-            >
-              {en ? "Contact →" : "Contato →"}
-            </a>
           </div>
         </div>
       </footer>
