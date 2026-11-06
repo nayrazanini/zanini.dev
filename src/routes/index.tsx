@@ -284,8 +284,8 @@ function IndexContent() {
               <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
                 <p>
                   {en
-                    ? "In 2022, I went back to studying with a clear goal: moving into technology. I started with Software Testing and DevOps & Agile Culture courses at FIAP, and in 2023 I began the Systems Analysis and Development program at UNIP."
-                    : "Em 2022, voltei a estudar com um objetivo claro: migrar para a tecnologia. Comecei com os cursos de Testes de Software e DevOps & Agile Culture, na FIAP, e em 2023 iniciei o curso de Análise e Desenvolvimento de Sistemas, na UNIP."}
+                    ? "In 2022, I went back to studying with a clear goal: moving into technology. I started with Software Testing and DevOps & Agile Culture courses at FIAP, and then I pursued the Systems Analysis and Development degree at UNIP, which I completed in December 2024."
+                    : "Em 2022, voltei a estudar com um objetivo claro: migrar para a tecnologia. Comecei com os cursos de Testes de Software e DevOps & Agile Culture, na FIAP, e depois cursei Análise e Desenvolvimento de Sistemas, na UNIP, concluído em dezembro de 2024."}
                 </p>
 
                 <p>
@@ -304,8 +304,8 @@ function IndexContent() {
               <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
                 <p>
                   {en
-                    ? "In 2025 I started my postgraduate degree in Software Engineering and, in September, I was promoted to Junior Programmer at UNIP."
-                    : "Em 2025 comecei a pós-graduação em Engenharia de Software e, em setembro, fui promovida a Programadora Júnior na UNIP."}
+                    ? "In September 2025, I was promoted to Junior Programmer at UNIP. Alongside that, I pursued a postgraduate degree in Software Engineering, which I completed in April 2026."
+                    : "Em setembro de 2025, fui promovida a Programadora Júnior na UNIP. Em paralelo, cursei a pós-graduação em Engenharia de Software, concluída em abril de 2026."}
                 </p>
 
                 <p>

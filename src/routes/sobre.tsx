@@ -43,19 +43,19 @@ const TIMELINE = [
     text: "Cursos de Testes de Software e DevOps & Agile Culture (FIAP), marcando o início consciente da transição de carreira.",
   },
   {
-    year: "2023",
-    title: "Análise e Desenvolvimento de Sistemas — UNIP",
-    text: "Voltei aos bancos da faculdade no curso técnico em ADS, mergulhando em programação, banco de dados e engenharia de software.",
-  },
-  {
-    year: "2025",
-    title: "Pós-graduação em Engenharia de Software",
-    text: "Início da pós na UNIP, com foco em arquitetura, qualidade e processos de desenvolvimento.",
+    year: "2024",
+    title: "Tecnólogo em Análise e Desenvolvimento de Sistemas — UNIP",
+    text: "Concluí o tecnólogo em ADS em dezembro de 2024, mergulhando em programação, banco de dados e engenharia de software.",
   },
   {
     year: "Set/2025",
     title: "Promovida a Programadora Jr.",
     text: "Transição oficial para a área técnica: SQL Server, testes funcionais e validação de regras de negócio em sistemas críticos da UNIP.",
+  },
+  {
+    year: "2026",
+    title: "Pós-graduação em Engenharia de Software",
+    text: "Conclusão da pós na UNIP, em abril de 2026, com foco em arquitetura, qualidade e processos de desenvolvimento.",
   },
   {
     year: "Hoje",
@@ -92,10 +92,11 @@ function SobrePage() {
             minha formação para alavancar uma nova carreira.
           </p>
           <p>
-            Em 2023, iniciei o curso de{" "}
-            <strong>Análise e Desenvolvimento de Sistemas</strong> e,
-            atualmente, curso a{" "}
-            <strong>Pós-graduação em Engenharia de Software</strong> pela UNIP.
+            Me formei em{" "}
+            <strong>Análise e Desenvolvimento de Sistemas</strong> (dezembro de
+            2024) e concluí a{" "}
+            <strong>Pós-graduação em Engenharia de Software</strong> (abril de
+            2026), ambas pela UNIP.
             Minha meta é integrar minha bagagem na área{" "}
             <strong>Administrativa Educacional</strong> com minha paixão por{" "}
             <strong>soluções práticas e tecnológicas</strong>, unindo visão de
