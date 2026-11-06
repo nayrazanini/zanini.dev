@@ -3,8 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 import { useLanguage } from "@/context/LanguageContext";
-import { ARTIGOS } from "@/data/artigos";
-import { ARTIGOS_EN, dataEn } from "@/data/artigos.en";
+import { ARTIGOS_TODOS as ARTIGOS, ARTIGOS_EN_TODOS as ARTIGOS_EN, dataEn } from "@/data/artigos.todos";
 
 export const Route = createFileRoute("/")({
   head: () => ({
