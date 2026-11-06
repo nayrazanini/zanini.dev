@@ -453,10 +453,9 @@ function IndexContent() {
 
             <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
               {[
-                { label: "E-mail", value: "zanini.n@outlook.com.br", href: "mailto:zanini.n@outlook.com.br", icon: Mail },
+                { label: "E-mail", href: "mailto:zanini.n@outlook.com.br", icon: Mail },
                 {
                   label: "WhatsApp",
-                  value: "(11) 9.8136-8778",
                   href: `https://wa.me/5511981368778?text=${encodeURIComponent(
                     en
                       ? "Hi Náyra! I found your portfolio and would like to talk."
@@ -464,12 +463,11 @@ function IndexContent() {
                   )}`,
                   icon: MessageCircle,
                 },
-                { label: "LinkedIn", value: "nayra-zanini", href: "https://linkedin.com/in/nayra-zanini/", icon: Briefcase },
-                { label: "GitHub", value: "nayrazanini", href: "https://github.com/nayrazanini", icon: Code2 },
-                { label: "Instagram", value: "@nazanini_", href: "https://instagram.com/nazanini_", icon: Camera },
+                { label: "LinkedIn", href: "https://linkedin.com/in/nayra-zanini/", icon: Briefcase },
+                { label: "GitHub", href: "https://github.com/nayrazanini", icon: Code2 },
+                { label: "Instagram", href: "https://instagram.com/nazanini_", icon: Camera },
                 {
                   label: en ? "Résumé" : "Currículo",
-                  value: en ? "Download PDF" : "Baixar PDF",
                   href: "/CV_Nayra_Zanini.pdf",
                   icon: Download,
                   download: true,
@@ -483,17 +481,10 @@ function IndexContent() {
                     : c.href.startsWith("http")
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                  className={`group h-[72px] rounded-xl border border-border/60 px-4 flex flex-col justify-center hover:border-terracotta/60 transition-colors ${
-                    c.label === "E-mail" || c.download ? "col-span-2 xl:col-span-1" : ""
-                  }`}
+                  className="group h-14 rounded-xl border border-border/60 px-4 flex items-center justify-center gap-2.5 text-sm text-ink hover:border-terracotta/60 hover:text-terracotta transition-colors"
                 >
-                  <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] text-terracotta">
-                    <c.icon className="h-3.5 w-3.5" aria-hidden="true" />
-                    {c.label}
-                  </p>
-                  <p className="mt-1 text-sm text-ink group-hover:text-terracotta transition-colors truncate">
-                    {c.value}
-                  </p>
+                  <c.icon className="h-4 w-4 text-terracotta" aria-hidden="true" />
+                  {c.label}
                 </a>
               ))}
             </div>
