@@ -8,7 +8,7 @@ export const Route = createFileRoute("/sobre")({
       {
         name: "description",
         content:
-          "A história de Náyra Zanini: da Administração com ênfase em TI à transição para programação, com 13 anos dedicados ao cuidado familiar.",
+          "A história de Náyra Zanini: da Administração com ênfase em TI à transição para programação, com 13 anos dedicados a cuidar da família.",
       },
       { property: "og:title", content: "Sobre — Náyra Zanini" },
       {
@@ -33,13 +33,13 @@ const TIMELINE = [
     text: "Início na área administrativa educacional, com trabalho intenso em dados acadêmicos, automações e sistemas internos.",
   },
   {
-    year: "2015 – 2028",
-    title: "Pausa consciente para cuidar da minha avó",
-    text: "Durante 13 anos, dediquei tempo e energia ao cuidado familiar. Um período de profundo crescimento humano que carrego comigo em cada decisão.",
+    year: "2008 – 2021",
+    title: "Cuidando da minha vó",
+    text: "Minha vó precisou de cuidados quando eu ainda estava na faculdade, e passei a ajudar. Depois da formatura, a situação ficou mais exigente e, por anos, meu foco foi trabalhar e cuidar dela, junto com a minha mãe. Foram 13 anos de dedicação, e estudar precisou esperar.",
   },
   {
     year: "2022",
-    title: "Primeiros passos formais na tecnologia",
+    title: "Recomeço: primeiros passos formais na tecnologia",
     text: "Cursos de Testes de Software e DevOps & Agile Culture (FIAP), marcando o início consciente da transição de carreira.",
   },
   {

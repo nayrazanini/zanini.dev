@@ -241,11 +241,11 @@ function IndexContent() {
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 py-10 md:py-12">
           <div className="mb-8">
             <p className={SECTION_LABEL}>
-              {en ? "My journey" : "Minha trajetória"}
+              {en ? "Journey" : "Trajetória"}
             </p>
 
             <h2 className={SECTION_TITLE}>
-              {en ? "Professional Experience" : "Experiência profissional"}
+              {en ? "From Caring to Technology" : "Do cuidado à tecnologia"}
             </h2>
           </div>
 
@@ -258,74 +258,66 @@ function IndexContent() {
               <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
                 <p>
                   {en
-                    ? "My journey at Universidade Paulista began in 2015, working with academic and administrative processes. It was there that I built solid experience with the Lyceum ERP and the daily operations of an educational institution."
-                    : "Minha trajetória na Universidade Paulista começou em 2015, em uma atuação voltada aos processos acadêmicos e administrativos. Foi nesse ambiente que construí uma experiência sólida com o ERP Lyceum e com as rotinas de uma instituição de ensino."}
+                    ? "In 2008, while I was still in college, my grandmother needed care and I began helping to look after her. I kept studying and graduated in Business Administration with an emphasis in IT from FIAP in 2014."
+                    : "Em 2008, ainda na faculdade, minha vó precisou de cuidados e eu passei a ajudar a cuidar dela. Segui estudando e me formei em Administração com ênfase em TI pela FIAP, em 2014."}
                 </p>
 
                 <p>
                   {en
-                    ? "Daily contact with systems, academic information, and requests from different departments sparked my interest in understanding how technology works behind these processes."
-                    : "O contato diário com sistemas, informações acadêmicas e demandas de diferentes áreas despertou meu interesse em compreender melhor como a tecnologia funciona por trás dos processos."}
+                    ? "In 2015 I joined UNIP, working with academic and administrative processes and the Lyceum ERP. Her situation had become more demanding: for years, my focus was on working and caring for her, together with my mother."
+                    : "Em 2015 entrei na UNIP, atuando com processos acadêmicos e administrativos e com o ERP Lyceum. A situação dela ficou mais exigente: por anos, meu foco foi trabalhar e cuidar dela, junto com a minha mãe."}
                 </p>
 
                 <p>
                   {en
-                    ? "Rather than simply using systems, I began to see opportunities to analyze, question, and improve how they meet business needs."
-                    : "Mais do que utilizar sistemas, passei a enxergar as possibilidades de analisar, questionar e melhorar a maneira como eles atendem às necessidades do negócio."}
-                </p>
-              </div>
-            </article>
-
-            <article>
-              <h3 className="text-lg md:text-xl font-semibold text-ink mb-3">
-                {en
-                  ? "Between Processes and Technology"
-                  : "Entre processos e tecnologia"}
-              </h3>
-
-              <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
-                <p>
-                  {en
-                    ? "The desire to deepen my knowledge led me to pursue a degree in Systems Analysis and Development, beginning a new stage in my professional journey."
-                    : "A vontade de aprofundar meus conhecimentos me levou à formação em Análise e Desenvolvimento de Sistemas, iniciando uma nova etapa da minha trajetória profissional."}
-                </p>
-
-                <p>
-                  {en
-                    ? "Throughout this journey, I connected my experience in the education sector with technical knowledge in SQL Server, queries, data analysis, functional testing, and inconsistency investigation."
-                    : "Ao longo dessa jornada, aproximei minha experiência com o ambiente educacional de conhecimentos técnicos em SQL Server, consultas, análise de dados, testes funcionais e investigação de inconsistências."}
-                </p>
-
-                <p>
-                  {en
-                    ? "Later, my postgraduate studies in Software Engineering broadened my perspective on development, quality, architecture, and the processes involved in building solutions."
-                    : "Posteriormente, a pós-graduação em Engenharia de Software ampliou minha perspectiva sobre desenvolvimento, qualidade, arquitetura e processos envolvidos na construção de soluções."}
+                    ? "There were 13 years of dedication, until 2021. Studying had to wait, but the interest in understanding how systems work behind the processes never stopped growing."
+                    : "Foram 13 anos de dedicação, até 2021. Estudar precisou esperar, mas a curiosidade de entender como os sistemas funcionam por trás dos processos nunca parou de crescer."}
                 </p>
               </div>
             </article>
 
             <article>
               <h3 className="text-lg md:text-xl font-semibold text-ink mb-3">
-                {en ? "Development in Practice" : "Desenvolvimento em prática"}
+                {en ? "Starting Again" : "O recomeço"}
               </h3>
 
               <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
                 <p>
                   {en
-                    ? "I currently work as a Junior Programmer at Universidade Paulista, combining the functional knowledge I have gained over the years with technical work on enterprise systems."
-                    : "Atualmente, atuo como Programadora Júnior na Universidade Paulista, unindo o conhecimento funcional adquirido ao longo dos anos à atuação técnica em sistemas corporativos."}
+                    ? "In 2022, I went back to studying with a clear goal: moving into technology. I started with Software Testing and DevOps & Agile Culture courses at FIAP, and in 2023 I began the Systems Analysis and Development program at UNIP."
+                    : "Em 2022, voltei a estudar com um objetivo claro: migrar para a tecnologia. Comecei com os cursos de Testes de Software e DevOps & Agile Culture, na FIAP, e em 2023 iniciei o curso de Análise e Desenvolvimento de Sistemas, na UNIP."}
                 </p>
 
                 <p>
                   {en
-                    ? "My work involves SQL Server and T-SQL, developing and maintaining queries, Views, and Stored Procedures, as well as analyzing business rules and investigating incidents in the Lyceum ERP."
-                    : "Meu trabalho envolve SQL Server e T-SQL, desenvolvimento e manutenção de consultas, Views e Stored Procedures, além da análise de regras de negócio e investigação de incidentes no ERP Lyceum."}
+                    ? "That is where SQL Server, queries, and data analysis stopped being just everyday tools and became my path."
+                    : "Foi ali que SQL Server, consultas e análise de dados deixaram de ser apenas ferramentas do dia a dia e se tornaram o meu caminho."}
+                </p>
+              </div>
+            </article>
+
+            <article>
+              <h3 className="text-lg md:text-xl font-semibold text-ink mb-3">
+                {en ? "Where I Am Today" : "Onde estou hoje"}
+              </h3>
+
+              <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
+                <p>
+                  {en
+                    ? "In 2025 I started my postgraduate degree in Software Engineering and, in September, I was promoted to Junior Programmer at UNIP."
+                    : "Em 2025 comecei a pós-graduação em Engenharia de Software e, em setembro, fui promovida a Programadora Júnior na UNIP."}
                 </p>
 
                 <p>
                   {en
-                    ? "I also participate in functional testing and correction validation, aiming to understand problems in depth and contribute to consistent solutions aligned with users' needs."
-                    : "Também participo de testes funcionais e validações de correções, buscando compreender os problemas em profundidade e contribuir para soluções consistentes e alinhadas às necessidades dos usuários."}
+                    ? "Today I work with SQL Server and T-SQL, developing and maintaining queries, Views, and Stored Procedures, analyzing business rules, investigating incidents in the Lyceum ERP, and taking part in functional testing and fix validation."
+                    : "Hoje trabalho com SQL Server e T-SQL, desenvolvendo e mantendo consultas, Views e Stored Procedures, analisando regras de negócio, investigando incidentes no ERP Lyceum e participando de testes funcionais e validações de correções."}
+                </p>
+
+                <p>
+                  {en
+                    ? "I keep studying every day, because I want to build better systems, and I carry with me everything that caring for someone taught me."
+                    : "Sigo estudando todos os dias porque quero construir sistemas melhores, e levo comigo tudo o que cuidar de alguém me ensinou."}
                 </p>
               </div>
             </article>
