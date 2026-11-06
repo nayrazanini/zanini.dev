@@ -53,10 +53,16 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
           <a
             href="/#inicio"
             onClick={(event) => handleSectionNavigation(event, "/#inicio")}
-            className="font-display text-xl font-semibold tracking-tight text-ink whitespace-nowrap"
+            className="shrink-0 flex items-center"
             aria-label={en ? "Go to homepage" : "Ir para a página inicial"}
           >
-            zanini<span className="text-terracotta">.dev</span>
+            <img
+              src="/logo.png"
+              alt="zanini.dev"
+              width={1545}
+              height={327}
+              className="h-7 sm:h-9 w-auto"
+            />
           </a>
 
           <nav className="flex items-center gap-3 sm:gap-5 lg:gap-7 overflow-x-auto">
@@ -132,9 +138,14 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
         <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div>
-              <p className="font-display text-ink text-base font-semibold">
-                zanini<span className="text-terracotta">.dev</span>
-              </p>
+              <img
+                src="/logo.png"
+                alt="zanini.dev"
+                width={1545}
+                height={327}
+                className="h-8 w-auto"
+                loading="lazy"
+              />
 
               <p className="mt-1 text-xs text-muted-foreground">
                 © {new Date().getFullYear()} Náyra Zanini
