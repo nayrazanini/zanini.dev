@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useSwipe } from "@/hooks/use-swipe";
+import { useSlider } from "@/hooks/use-slider";
 import { PROJETOS } from "@/data/projetos";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -113,19 +113,16 @@ export function ProjectsCarousel() {
 
   const items = [...PROJETOS].sort((a, b) => a.n.localeCompare(b.n));
   const total = items.length;
-  const [index, setIndex] = useState(0);
   const [pausado, setPausado] = useState(false);
-  const ir = useCallback((i: number) => setIndex(((i % total) + total) % total), [total]);
+  const slider = useSlider(total);
+  const { index, go, goTo } = slider;
 
   useEffect(() => {
     if (pausado || total < 2) return;
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = setTimeout(() => setIndex((i) => (i + 1) % total), PROJECT_INTERVAL);
+    const t = setTimeout(() => go(1), PROJECT_INTERVAL);
     return () => clearTimeout(t);
-  }, [index, pausado, total]);
-
-  const atual = items[index];
-  const swipe = useSwipe({ onPrev: () => ir(index - 1), onNext: () => ir(index + 1) });
+  }, [index, pausado, total, go]);
 
   return (
     <section
@@ -166,25 +163,28 @@ export function ProjectsCarousel() {
         onBlur={() => setPausado(false)}
       >
         <style>{`
-          @keyframes proj-in { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
           @keyframes proj-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-          @media (prefers-reduced-motion: reduce) { .proj-anim, .proj-bar { animation: none !important; } }
+          @media (prefers-reduced-motion: reduce) { .proj-bar { animation: none !important; } }
         `}</style>
 
         <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card transition-colors hover:border-terracotta/40">
-          <div {...swipe.handlers} style={swipe.style}>
-          <div
-            key={atual.slug}
-            className="proj-anim"
-            style={{ animation: "proj-in 600ms ease-out" }}
-            aria-live="polite"
-          >
-            <ProjectCard project={atual} en={en} />
-          </div>
+          <div ref={slider.containerRef} {...slider.handlers} style={slider.containerStyle} aria-live="polite">
+            <div style={slider.trackStyle}>
+              {slider.visiveis.map(({ key, i }) => (
+                <div
+                  key={key}
+                  aria-hidden={key !== "cur"}
+                  style={{ flex: "1 1 0", minWidth: 0 }}
+                  {...(key !== "cur" ? { inert: true as unknown as undefined } : {})}
+                >
+                  <ProjectCard project={items[i]} en={en} />
+                </div>
+              ))}
+            </div>
           </div>
 
           {total > 1 && (
-            <div className="absolute inset-x-0 bottom-0 h-0.5 bg-border/40">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 bg-border/40">
               <div
                 key={`${index}-${pausado ? "p" : "r"}`}
                 className="proj-bar h-full origin-left bg-terracotta"
@@ -206,7 +206,7 @@ export function ProjectsCarousel() {
                 role="tab"
                 aria-selected={i === index}
                 aria-label={p.title}
-                onClick={() => ir(i)}
+                onClick={() => goTo(i)}
                 className={`h-2 rounded-full transition-all ${
                   i === index ? "w-8 bg-terracotta" : "w-2 bg-border hover:bg-terracotta/50"
                 }`}
@@ -216,7 +216,7 @@ export function ProjectsCarousel() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => ir(index - 1)}
+              onClick={() => go(-1)}
               aria-label={en ? "Previous project" : "Projeto anterior"}
               className="h-9 w-9 rounded-full border border-border/60 text-muted-foreground transition-colors hover:border-terracotta/50 hover:text-terracotta"
             >
@@ -224,7 +224,7 @@ export function ProjectsCarousel() {
             </button>
             <button
               type="button"
-              onClick={() => ir(index + 1)}
+              onClick={() => go(1)}
               aria-label={en ? "Next project" : "Próximo projeto"}
               className="h-9 w-9 rounded-full border border-border/60 text-muted-foreground transition-colors hover:border-terracotta/50 hover:text-terracotta"
             >
