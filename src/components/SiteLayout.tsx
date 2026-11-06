@@ -90,15 +90,6 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
               {en ? "Contact" : "Contato"}
             </a>
 
-            <a
-              href="/CV_Nayra_Zanini.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="whitespace-nowrap text-xs sm:text-sm text-muted-foreground hover:text-terracotta transition-colors"
-            >
-              CV ↗
-            </a>
-
             <div className="flex items-center gap-1 border-l border-border/60 pl-3">
               <button
                 type="button"
