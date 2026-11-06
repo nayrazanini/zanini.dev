@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useSwipe } from "@/hooks/use-swipe";
 import { PROJETOS } from "@/data/projetos";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -124,6 +125,7 @@ export function ProjectsCarousel() {
   }, [index, pausado, total]);
 
   const atual = items[index];
+  const swipe = useSwipe({ onPrev: () => ir(index - 1), onNext: () => ir(index + 1) });
 
   return (
     <section
@@ -156,6 +158,9 @@ export function ProjectsCarousel() {
       <div
         className="w-full"
         onMouseEnter={() => setPausado(true)}
+        onPointerDown={() => setPausado(true)}
+        onPointerUp={() => setPausado(false)}
+        onPointerCancel={() => setPausado(false)}
         onMouseLeave={() => setPausado(false)}
         onFocus={() => setPausado(true)}
         onBlur={() => setPausado(false)}
@@ -167,6 +172,7 @@ export function ProjectsCarousel() {
         `}</style>
 
         <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card transition-colors hover:border-terracotta/40">
+          <div {...swipe.handlers} style={swipe.style}>
           <div
             key={atual.slug}
             className="proj-anim"
@@ -174,6 +180,7 @@ export function ProjectsCarousel() {
             aria-live="polite"
           >
             <ProjectCard project={atual} en={en} />
+          </div>
           </div>
 
           {total > 1 && (

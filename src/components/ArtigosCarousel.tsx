@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useSwipe } from "@/hooks/use-swipe";
 
 export type ArtigoCard = {
   slug: string;
@@ -25,6 +26,8 @@ export function ArtigosCarousel({ artigos, en }: { artigos: ArtigoCard[]; en: bo
     return () => clearTimeout(t);
   }, [index, pausado, total]);
 
+  const swipe = useSwipe({ onPrev: () => ir(index - 1), onNext: () => ir(index + 1) });
+
   if (total === 0) return null;
   const a = artigos[index];
 
@@ -32,6 +35,9 @@ export function ArtigosCarousel({ artigos, en }: { artigos: ArtigoCard[]; en: bo
     <div
       className="grid gap-4"
       onMouseEnter={() => setPausado(true)}
+      onPointerDown={() => setPausado(true)}
+      onPointerUp={() => setPausado(false)}
+      onPointerCancel={() => setPausado(false)}
       onMouseLeave={() => setPausado(false)}
       onFocus={() => setPausado(true)}
       onBlur={() => setPausado(false)}
@@ -43,6 +49,7 @@ export function ArtigosCarousel({ artigos, en }: { artigos: ArtigoCard[]; en: bo
       `}</style>
 
       <div className="relative overflow-hidden rounded-xl border border-border/60 hover:border-terracotta/50 transition-colors">
+        <div {...swipe.handlers} style={swipe.style}>
         <Link
           key={a.slug}
           to="/artigos/$slug"
@@ -63,6 +70,7 @@ export function ArtigosCarousel({ artigos, en }: { artigos: ArtigoCard[]; en: bo
             <span className="text-terracotta">{en ? "Read article →" : "Ler artigo →"}</span>
           </p>
         </Link>
+        </div>
 
         {/* barra de progresso do tempo até o próximo artigo */}
         {total > 1 && (

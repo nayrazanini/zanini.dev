@@ -451,7 +451,7 @@ function IndexContent() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 xl:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
               {[
                 { label: "E-mail", value: "zanini.n@outlook.com.br", href: "mailto:zanini.n@outlook.com.br", icon: Mail },
                 {
@@ -483,7 +483,9 @@ function IndexContent() {
                     : c.href.startsWith("http")
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                  className="group h-[72px] rounded-xl border border-border/60 px-4 flex flex-col justify-center hover:border-terracotta/60 transition-colors"
+                  className={`group h-[72px] rounded-xl border border-border/60 px-4 flex flex-col justify-center hover:border-terracotta/60 transition-colors ${
+                    c.label === "E-mail" || c.download ? "col-span-2 xl:col-span-1" : ""
+                  }`}
                 >
                   <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] text-terracotta">
                     <c.icon className="h-3.5 w-3.5" aria-hidden="true" />
