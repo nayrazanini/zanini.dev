@@ -4,6 +4,9 @@ import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { BackToTop } from "@/components/BackToTop";
 
+// Ao recarregar (F5), a página deve começar no topo, sem manter #seção na URL.
+let reloadTratado = false;
+
 export function SiteLayout({ children }: { children: ReactNode }) {
   return <SiteLayoutContent>{children}</SiteLayoutContent>;
 }
@@ -12,6 +15,19 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
   const { language, setLanguage } = useLanguage();
   const en = language === "en";
   const [menuAberto, setMenuAberto] = useState(false);
+
+  useEffect(() => {
+    if (reloadTratado) return;
+    reloadTratado = true;
+    const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    if (nav?.type === "reload") {
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   useEffect(() => {
     if (!menuAberto) return;
@@ -40,8 +56,6 @@ function SiteLayoutContent({ children }: { children: ReactNode }) {
 
       if (section) {
         event.preventDefault();
-
-        window.history.replaceState(null, "", `/#${sectionId}`);
 
         section.scrollIntoView({
           behavior: "smooth",
