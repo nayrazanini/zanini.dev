@@ -1,9 +1,11 @@
-export const brl = (v: number) =>
-  new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v || 0);
+const locale = (en: boolean) => (en ? "en-US" : "pt-BR");
 
-export const dataBR = (iso: string) => {
+export const brl = (v: number, en = false) =>
+  new Intl.NumberFormat(locale(en), { style: "currency", currency: "BRL" }).format(v || 0);
+
+export const dataBR = (iso: string, en = false) => {
   const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
+  return en ? `${m}/${d}/${y}` : `${d}/${m}/${y}`;
 };
 
 /** Primeiro dia do mês em ISO (YYYY-MM-01) a partir de "YYYY-MM" */
@@ -18,9 +20,25 @@ export const inicioMesSeguinte = (mes: string) => {
 
 export const mesAtual = () => new Date().toISOString().slice(0, 7);
 
-export const rotuloMes = (mes: string) => {
+export const rotuloMes = (mes: string, en = false) => {
   const [y, m] = mes.split("-").map(Number);
-  return new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(
+  return new Intl.DateTimeFormat(locale(en), { month: "long", year: "numeric" }).format(
     new Date(Date.UTC(y, m - 1, 1)),
   );
 };
+
+/** Nomes das contas e categorias criadas por padrão no onboarding (em português no banco). */
+const NOMES_EN: Record<string, string> = {
+  Carteira: "Wallet",
+  "Salário": "Salary",
+  Freelance: "Freelance",
+  Moradia: "Housing",
+  "Alimentação": "Food",
+  Transporte: "Transport",
+  "Educação": "Education",
+  Lazer: "Leisure",
+  "Saúde": "Health",
+};
+
+/** Em inglês, traduz os nomes padrão; nomes criados pelo usuário ficam como estão. */
+export const nomeExibicao = (nome: string, en = false) => (en ? NOMES_EN[nome] ?? nome : nome);

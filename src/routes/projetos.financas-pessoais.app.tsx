@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { Session } from "@supabase/supabase-js";
 import { SiteLayout } from "@/components/SiteLayout";
+import { useLanguage } from "@/context/LanguageContext";
 import { supabase, supabaseConfigured } from "@/integrations/supabase/client";
 import {
   brl,
@@ -9,6 +10,7 @@ import {
   inicioMes,
   inicioMesSeguinte,
   mesAtual,
+  nomeExibicao,
   rotuloMes,
 } from "@/lib/financas";
 
@@ -69,6 +71,8 @@ const btnGhost =
   "inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-border/70 text-sm font-medium hover:border-terracotta/50 hover:text-terracotta transition-colors disabled:opacity-50";
 
 function FinancasApp() {
+  const { language } = useLanguage();
+  const en = language === "en";
   const [session, setSession] = useState<Session | null>(null);
   const [carregandoSessao, setCarregandoSessao] = useState(true);
 
@@ -92,30 +96,31 @@ function FinancasApp() {
           to="/projetos/financas-pessoais"
           className="text-sm text-muted-foreground hover:text-terracotta transition-colors"
         >
-          ← Case study do projeto
+          {en ? "← Project case study" : "← Case study do projeto"}
         </Link>
 
         <header className="mt-5 pb-6 border-b border-border/60">
           <p className="text-[11px] sm:text-xs uppercase tracking-[0.2em] text-terracotta font-medium">
-            App · demonstração utilizável
+            {en ? "App · working demo" : "App · demonstração utilizável"}
           </p>
           <h1 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-medium">
-            Finanças Pessoais
+            {en ? "Personal Finance" : "Finanças Pessoais"}
           </h1>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-2xl">
-            Crie sua conta, registre receitas e despesas, defina orçamentos por
-            categoria e acompanhe o saldo do mês. Cada usuário vê apenas os
-            próprios dados.
+            {en
+              ? "Create your account, record income and expenses, set budgets by category and track the month's balance. Each user sees only their own data."
+              : "Crie sua conta, registre receitas e despesas, defina orçamentos por categoria e acompanhe o saldo do mês. Cada usuário vê apenas os próprios dados."}
           </p>
         </header>
 
         {!supabaseConfigured ? (
           <p className="mt-10 max-w-md rounded-2xl border border-border/60 bg-card p-6 text-sm text-muted-foreground">
-            O app está temporariamente indisponível. Volte em instantes ou veja o
-            código no GitHub.
+            {en
+              ? "The app is temporarily unavailable. Please come back shortly or check the code on GitHub."
+              : "O app está temporariamente indisponível. Volte em instantes ou veja o código no GitHub."}
           </p>
         ) : carregandoSessao ? (
-          <p className="mt-10 text-sm text-muted-foreground">Carregando…</p>
+          <p className="mt-10 text-sm text-muted-foreground">{en ? "Loading…" : "Carregando…"}</p>
         ) : session ? (
           <Painel session={session} />
         ) : (
@@ -127,6 +132,8 @@ function FinancasApp() {
 }
 
 function Autenticacao() {
+  const { language } = useLanguage();
+  const en = language === "en";
   const [modo, setModo] = useState<"entrar" | "cadastrar">("entrar");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -151,11 +158,17 @@ function Autenticacao() {
         });
         if (error) throw error;
         if (!data.session) {
-          setAviso("Cadastro criado. Confirme o e-mail para acessar o app.");
+          setAviso(
+            en
+              ? "Account created. Confirm your e-mail to access the app."
+              : "Cadastro criado. Confirme o e-mail para acessar o app.",
+          );
         }
       }
     } catch (err) {
-      setErro(err instanceof Error ? err.message : "Não foi possível concluir.");
+      setErro(
+        err instanceof Error ? err.message : en ? "Could not complete the request." : "Não foi possível concluir.",
+      );
     } finally {
       setEnviando(false);
     }
@@ -167,7 +180,7 @@ function Autenticacao() {
       provider: "google",
       options: { redirectTo: window.location.href },
     });
-    if (error) setErro("Não foi possível entrar com o Google.");
+    if (error) setErro(en ? "Could not sign in with Google." : "Não foi possível entrar com o Google.");
   }
 
   return (
@@ -183,7 +196,7 @@ function Autenticacao() {
                 modo === m ? "bg-card text-terracotta font-medium" : "text-muted-foreground"
               }`}
             >
-              {m === "entrar" ? "Entrar" : "Criar conta"}
+              {m === "entrar" ? (en ? "Sign in" : "Entrar") : en ? "Create account" : "Criar conta"}
             </button>
           ))}
         </div>
@@ -205,7 +218,7 @@ function Autenticacao() {
           </div>
           <div>
             <label className={label} htmlFor="senha">
-              Senha
+              {en ? "Password" : "Senha"}
             </label>
             <input
               id="senha"
@@ -223,18 +236,28 @@ function Autenticacao() {
           {aviso && <p className="text-sm text-terracotta">{aviso}</p>}
 
           <button type="submit" disabled={enviando} className={`${btn} w-full`}>
-            {enviando ? "Enviando…" : modo === "entrar" ? "Entrar" : "Criar conta"}
+            {enviando
+              ? en
+                ? "Sending…"
+                : "Enviando…"
+              : modo === "entrar"
+                ? en
+                  ? "Sign in"
+                  : "Entrar"
+                : en
+                  ? "Create account"
+                  : "Criar conta"}
           </button>
         </form>
 
         <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
           <span className="h-px flex-1 bg-border/60" />
-          ou
+          {en ? "or" : "ou"}
           <span className="h-px flex-1 bg-border/60" />
         </div>
 
         <button type="button" onClick={google} className={`${btnGhost} w-full`}>
-          Continuar com Google
+          {en ? "Continue with Google" : "Continuar com Google"}
         </button>
       </div>
     </div>
@@ -242,6 +265,8 @@ function Autenticacao() {
 }
 
 function Painel({ session }: { session: Session }) {
+  const { language } = useLanguage();
+  const en = language === "en";
   const userId = session.user.id;
   const [mes, setMes] = useState(mesAtual());
   const [contas, setContas] = useState<Conta[]>([]);
@@ -300,15 +325,16 @@ function Painel({ session }: { session: Session }) {
   }, [transacoes]);
 
   const nomeCategoria = (id: string | null) =>
-    categorias.find((c) => c.id === id)?.nome ?? "—";
-  const nomeConta = (id: string | null) => contas.find((c) => c.id === id)?.nome ?? "—";
+    nomeExibicao(categorias.find((c) => c.id === id)?.nome ?? "—", en);
+  const nomeConta = (id: string | null) =>
+    nomeExibicao(contas.find((c) => c.id === id)?.nome ?? "—", en);
 
   return (
     <div className="mt-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <label className={label} htmlFor="mes">
-            Mês
+            {en ? "Month" : "Mês"}
           </label>
           <input
             id="mes"
@@ -325,7 +351,7 @@ function Painel({ session }: { session: Session }) {
             onClick={() => void supabase.auth.signOut()}
             className="hover:text-terracotta transition-colors underline underline-offset-4"
           >
-            Sair
+            {en ? "Sign out" : "Sair"}
           </button>
         </div>
       </div>
@@ -334,17 +360,17 @@ function Painel({ session }: { session: Session }) {
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {[
-          { t: "Receitas", v: resumo.receitas, c: "text-emerald-400" },
-          { t: "Despesas", v: resumo.despesas, c: "text-red-400" },
-          { t: "Saldo do mês", v: resumo.saldo, c: "text-terracotta" },
+          { t: en ? "Income" : "Receitas", v: resumo.receitas, c: "text-emerald-400" },
+          { t: en ? "Expenses" : "Despesas", v: resumo.despesas, c: "text-red-400" },
+          { t: en ? "Month balance" : "Saldo do mês", v: resumo.saldo, c: "text-terracotta" },
         ].map((k) => (
           <div key={k.t} className="p-4 sm:p-5 rounded-2xl bg-card border border-border/60">
             <p className={label}>{k.t}</p>
-            <p className={`mt-1 font-display text-xl sm:text-2xl ${k.c}`}>{brl(k.v)}</p>
+            <p className={`mt-1 font-display text-xl sm:text-2xl ${k.c}`}>{brl(k.v, en)}</p>
           </div>
         ))}
       </div>
-      <p className="mt-2 text-xs text-muted-foreground capitalize">{rotuloMes(mes)}</p>
+      <p className="mt-2 text-xs text-muted-foreground capitalize">{rotuloMes(mes, en)}</p>
 
       <NovaTransacao
         userId={userId}
@@ -356,13 +382,15 @@ function Painel({ session }: { session: Session }) {
 
       <section className="mt-10">
         <h2 className="font-sans text-lg md:text-xl font-semibold tracking-tight text-white">
-          Lançamentos
+          {en ? "Transactions" : "Lançamentos"}
         </h2>
         {carregando ? (
-          <p className="mt-3 text-sm text-muted-foreground">Carregando…</p>
+          <p className="mt-3 text-sm text-muted-foreground">{en ? "Loading…" : "Carregando…"}</p>
         ) : transacoes.length === 0 ? (
           <p className="mt-3 text-sm text-muted-foreground">
-            Nenhum lançamento neste mês. Registre o primeiro acima.
+            {en
+              ? "No transactions this month. Record the first one above."
+              : "Nenhum lançamento neste mês. Registre o primeiro acima."}
           </p>
         ) : (
           <ul className="mt-4 divide-y divide-border/60 border-y border-border/60">
@@ -371,7 +399,7 @@ function Painel({ session }: { session: Session }) {
                 <div className="min-w-0">
                   <p className="text-sm font-medium break-words">{t.descricao}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    {dataBR(t.data)} · {nomeCategoria(t.categoria_id)} ·{" "}
+                    {dataBR(t.data, en)} · {nomeCategoria(t.categoria_id)} ·{" "}
                     {nomeConta(t.conta_id)}
                   </p>
                 </div>
@@ -381,18 +409,18 @@ function Painel({ session }: { session: Session }) {
                       t.tipo === "receita" ? "text-emerald-400" : "text-red-400"
                     }`}
                   >
-                    {t.tipo === "receita" ? "+" : "−"} {brl(Number(t.valor))}
+                    {t.tipo === "receita" ? "+" : "−"} {brl(Number(t.valor), en)}
                   </span>
                   <button
                     type="button"
-                    aria-label={`Excluir ${t.descricao}`}
+                    aria-label={en ? `Delete ${t.descricao}` : `Excluir ${t.descricao}`}
                     onClick={async () => {
                       await supabase.from("fin_transacoes").delete().eq("id", t.id);
                       void carregar();
                     }}
                     className="text-xs text-muted-foreground hover:text-red-400 transition-colors"
                   >
-                    excluir
+                    {en ? "delete" : "excluir"}
                   </button>
                 </div>
               </li>
@@ -426,6 +454,8 @@ function NovaTransacao({
   mes: string;
   onSalvo: () => void | Promise<void>;
 }) {
+  const { language } = useLanguage();
+  const en = language === "en";
   const [tipo, setTipo] = useState<"despesa" | "receita">("despesa");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
@@ -446,7 +476,7 @@ function NovaTransacao({
     setErro(null);
     const numero = Number(valor.replace(",", "."));
     if (!Number.isFinite(numero) || numero <= 0) {
-      setErro("Informe um valor maior que zero.");
+      setErro(en ? "Enter an amount greater than zero." : "Informe um valor maior que zero.");
       return;
     }
     setSalvando(true);
@@ -473,7 +503,7 @@ function NovaTransacao({
   return (
     <section className="mt-8 p-5 sm:p-6 rounded-2xl bg-card border border-border/60">
       <h2 className="font-sans text-lg md:text-xl font-semibold tracking-tight text-white">
-        Novo lançamento
+        {en ? "New transaction" : "Novo lançamento"}
       </h2>
       <form onSubmit={submit} className="mt-4 grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2 flex gap-1 p-1 rounded-lg bg-background border border-border/60 max-w-xs">
@@ -489,14 +519,14 @@ function NovaTransacao({
                 tipo === t ? "bg-card text-terracotta font-medium" : "text-muted-foreground"
               }`}
             >
-              {t}
+              {en ? (t === "despesa" ? "Expense" : "Income") : t}
             </button>
           ))}
         </div>
 
         <div>
           <label className={label} htmlFor="descricao">
-            Descrição
+            {en ? "Description" : "Descrição"}
           </label>
           <input
             id="descricao"
@@ -509,7 +539,7 @@ function NovaTransacao({
         </div>
         <div>
           <label className={label} htmlFor="valor">
-            Valor (R$)
+            {en ? "Amount (R$)" : "Valor (R$)"}
           </label>
           <input
             id="valor"
@@ -518,12 +548,12 @@ function NovaTransacao({
             value={valor}
             onChange={(e) => setValor(e.target.value)}
             className={`${input} mt-1`}
-            placeholder="0,00"
+            placeholder={en ? "0.00" : "0,00"}
           />
         </div>
         <div>
           <label className={label} htmlFor="data">
-            Data
+            {en ? "Date" : "Data"}
           </label>
           <input
             id="data"
@@ -536,7 +566,7 @@ function NovaTransacao({
         </div>
         <div>
           <label className={label} htmlFor="categoria">
-            Categoria
+            {en ? "Category" : "Categoria"}
           </label>
           <select
             id="categoria"
@@ -544,17 +574,17 @@ function NovaTransacao({
             onChange={(e) => setCategoriaId(e.target.value)}
             className={`${input} mt-1`}
           >
-            <option value="">Sem categoria</option>
+            <option value="">{en ? "No category" : "Sem categoria"}</option>
             {opcoesCategoria.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.nome}
+                {nomeExibicao(c.nome, en)}
               </option>
             ))}
           </select>
         </div>
         <div>
           <label className={label} htmlFor="conta">
-            Conta
+            {en ? "Account" : "Conta"}
           </label>
           <select
             id="conta"
@@ -564,7 +594,7 @@ function NovaTransacao({
           >
             {contas.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.nome}
+                {nomeExibicao(c.nome, en)}
               </option>
             ))}
           </select>
@@ -572,7 +602,7 @@ function NovaTransacao({
 
         <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
           <button type="submit" disabled={salvando} className={btn}>
-            {salvando ? "Salvando…" : "Adicionar lançamento"}
+            {salvando ? (en ? "Saving…" : "Salvando…") : en ? "Add transaction" : "Adicionar lançamento"}
           </button>
           {erro && <p className="text-sm text-red-400">{erro}</p>}
         </div>
@@ -596,6 +626,8 @@ function Orcamentos({
   gastoPorCategoria: Map<string, number>;
   onSalvo: () => void | Promise<void>;
 }) {
+  const { language } = useLanguage();
+  const en = language === "en";
   const [categoriaId, setCategoriaId] = useState("");
   const [limite, setLimite] = useState("");
   const [erro, setErro] = useState<string | null>(null);
@@ -606,7 +638,11 @@ function Orcamentos({
     setErro(null);
     const numero = Number(limite.replace(",", "."));
     if (!categoriaId || !Number.isFinite(numero) || numero <= 0) {
-      setErro("Escolha a categoria e informe um limite maior que zero.");
+      setErro(
+        en
+          ? "Choose a category and enter a limit greater than zero."
+          : "Escolha a categoria e informe um limite maior que zero.",
+      );
       return;
     }
     setSalvando(true);
@@ -632,13 +668,13 @@ function Orcamentos({
   return (
     <section className="mt-10">
       <h2 className="font-sans text-lg md:text-xl font-semibold tracking-tight text-white">
-        Orçamentos do mês
+        {en ? "Monthly budgets" : "Orçamentos do mês"}
       </h2>
 
       <form onSubmit={submit} className="mt-4 flex flex-col sm:flex-row gap-3 sm:items-end">
         <div className="sm:w-56">
           <label className={label} htmlFor="orc-categoria">
-            Categoria
+            {en ? "Category" : "Categoria"}
           </label>
           <select
             id="orc-categoria"
@@ -646,17 +682,17 @@ function Orcamentos({
             onChange={(e) => setCategoriaId(e.target.value)}
             className={`${input} mt-1`}
           >
-            <option value="">Selecione</option>
+            <option value="">{en ? "Select" : "Selecione"}</option>
             {categorias.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.nome}
+                {nomeExibicao(c.nome, en)}
               </option>
             ))}
           </select>
         </div>
         <div className="sm:w-40">
           <label className={label} htmlFor="orc-limite">
-            Limite (R$)
+            {en ? "Limit (R$)" : "Limite (R$)"}
           </label>
           <input
             id="orc-limite"
@@ -664,18 +700,18 @@ function Orcamentos({
             value={limite}
             onChange={(e) => setLimite(e.target.value)}
             className={`${input} mt-1`}
-            placeholder="0,00"
+            placeholder={en ? "0.00" : "0,00"}
           />
         </div>
         <button type="submit" disabled={salvando} className={btnGhost}>
-          {salvando ? "Salvando…" : "Definir orçamento"}
+          {salvando ? (en ? "Saving…" : "Salvando…") : en ? "Set budget" : "Definir orçamento"}
         </button>
       </form>
       {erro && <p className="mt-2 text-sm text-red-400">{erro}</p>}
 
       {orcamentos.length === 0 ? (
         <p className="mt-4 text-sm text-muted-foreground">
-          Nenhum orçamento definido para este mês.
+          {en ? "No budget set for this month." : "Nenhum orçamento definido para este mês."}
         </p>
       ) : (
         <ul className="mt-5 space-y-4">
@@ -688,14 +724,14 @@ function Orcamentos({
               <li key={o.id}>
                 <div className="flex items-baseline justify-between gap-3 text-sm">
                   <span className="font-medium">
-                    {categorias.find((c) => c.id === o.categoria_id)?.nome ?? "—"}
+                    {nomeExibicao(categorias.find((c) => c.id === o.categoria_id)?.nome ?? "—", en)}
                   </span>
                   <span
                     className={`font-mono text-xs ${
                       estourou ? "text-red-400" : "text-muted-foreground"
                     }`}
                   >
-                    {brl(gasto)} / {brl(limiteNum)}
+                    {brl(gasto, en)} / {brl(limiteNum, en)}
                   </span>
                 </div>
                 <div className="mt-1.5 h-2 rounded-full bg-background border border-border/60 overflow-hidden">
