@@ -1,11 +1,23 @@
+import type { MouseEvent } from "react";
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
-import { Briefcase, Camera, Code2, Download, Mail, MessageCircle } from "lucide-react";
+import {
+  Briefcase,
+  Camera,
+  Code2,
+  Download,
+  Mail,
+  MessageCircle,
+} from "lucide-react";
 import { ArtigosCarousel } from "@/components/ArtigosCarousel";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 import { useLanguage } from "@/context/LanguageContext";
-import { ARTIGOS_TODOS as ARTIGOS, ARTIGOS_EN_TODOS as ARTIGOS_EN, dataEn } from "@/data/artigos.todos";
+import {
+  ARTIGOS_TODOS as ARTIGOS,
+  ARTIGOS_EN_TODOS as ARTIGOS_EN,
+  dataEn,
+} from "@/data/artigos.todos";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,6 +64,24 @@ function Index() {
 function IndexContent() {
   const { language } = useLanguage();
   const en = language === "en";
+
+  // E-mail e WhatsApp só são montados no clique, para não ficarem expostos no código da página
+  function abrirCanal(e: MouseEvent<HTMLAnchorElement>, acao: string) {
+    e.preventDefault();
+    if (acao === "email") {
+      window.location.href = `mailto:${["zanini.n", "outlook.com.br"].join("@")}`;
+    } else if (acao === "whatsapp") {
+      const numero = ["55", "11", "98136", "8778"].join("");
+      const mensagem = en
+        ? "Hi Náyra! I found your portfolio and would like to talk."
+        : "Olá, Náyra! Vi seu portfólio e gostaria de conversar.";
+      window.open(
+        `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`,
+        "_blank",
+        "noopener,noreferrer",
+      );
+    }
+  }
 
   const education = en
     ? [
@@ -143,8 +173,7 @@ function IndexContent() {
 
           <h1 className="font-moderno text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight text-ink uppercase max-w-full">
             Think.
-            <span className="text-terracotta"> Query.</span>
-            {" "}Build.
+            <span className="text-terracotta"> Query.</span> Build.
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm md:text-[15px] text-muted-foreground leading-relaxed">
@@ -159,10 +188,7 @@ function IndexContent() {
       <ProjectsCarousel />
 
       {/* SOBRE MIM */}
-      <section
-        id="sobre"
-        className="scroll-mt-24 border-y border-border/60"
-      >
+      <section id="sobre" className="scroll-mt-24 border-y border-border/60">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 py-10 md:py-12">
           <div className="grid lg:grid-cols-[0.75fr_1.25fr] gap-7 lg:gap-14">
             <div>
@@ -170,9 +196,7 @@ function IndexContent() {
                 {en ? "Get to know my journey" : "Conheça minha trajetória"}
               </p>
 
-              <h2 className={SECTION_TITLE}>
-                {en ? "About me" : "Sobre mim"}
-              </h2>
+              <h2 className={SECTION_TITLE}>{en ? "About me" : "Sobre mim"}</h2>
             </div>
 
             <div className="space-y-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
@@ -241,9 +265,7 @@ function IndexContent() {
       >
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 py-10 md:py-12">
           <div className="mb-8">
-            <p className={SECTION_LABEL}>
-              {en ? "Journey" : "Trajetória"}
-            </p>
+            <p className={SECTION_LABEL}>{en ? "Journey" : "Trajetória"}</p>
 
             <h2 className={SECTION_TITLE}>
               {en ? "From Caring to Technology" : "Do cuidado à tecnologia"}
@@ -403,9 +425,7 @@ function IndexContent() {
                 {en ? "Knowledge Sharing" : "Compartilhamento de conhecimento"}
               </p>
 
-              <h2 className={SECTION_TITLE}>
-                {en ? "Articles" : "Artigos"}
-              </h2>
+              <h2 className={SECTION_TITLE}>{en ? "Articles" : "Artigos"}</h2>
 
               <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
                 {en
@@ -417,7 +437,9 @@ function IndexContent() {
             <ArtigosCarousel
               en={en}
               artigos={ULTIMOS_ARTIGOS.map((original) => {
-                const artigo = en ? { ...original, ...ARTIGOS_EN[original.slug] } : original;
+                const artigo = en
+                  ? { ...original, ...ARTIGOS_EN[original.slug] }
+                  : original;
                 return {
                   slug: artigo.slug,
                   title: artigo.title,
@@ -440,9 +462,7 @@ function IndexContent() {
                 {en ? "Let's talk" : "Vamos conversar"}
               </p>
 
-              <h2 className={SECTION_TITLE}>
-                {en ? "Contact" : "Contato"}
-              </h2>
+              <h2 className={SECTION_TITLE}>{en ? "Contact" : "Contato"}</h2>
 
               <p className="mt-3 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
                 {en
@@ -453,19 +473,28 @@ function IndexContent() {
 
             <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
               {[
-                { label: "E-mail", href: "mailto:zanini.n@outlook.com.br", icon: Mail },
+                { label: "E-mail", href: "#", acao: "email", icon: Mail },
                 {
                   label: "WhatsApp",
-                  href: `https://wa.me/5511981368778?text=${encodeURIComponent(
-                    en
-                      ? "Hi Náyra! I found your portfolio and would like to talk."
-                      : "Olá, Náyra! Vi seu portfólio e gostaria de conversar.",
-                  )}`,
+                  href: "#",
+                  acao: "whatsapp",
                   icon: MessageCircle,
                 },
-                { label: "LinkedIn", href: "https://linkedin.com/in/nayra-zanini/", icon: Briefcase },
-                { label: "GitHub", href: "https://github.com/nayrazanini", icon: Code2 },
-                { label: "Instagram", href: "https://instagram.com/nazanini_", icon: Camera },
+                {
+                  label: "LinkedIn",
+                  href: "https://linkedin.com/in/nayra-zanini/",
+                  icon: Briefcase,
+                },
+                {
+                  label: "GitHub",
+                  href: "https://github.com/nayrazanini",
+                  icon: Code2,
+                },
+                {
+                  label: "Instagram",
+                  href: "https://instagram.com/nazanini_",
+                  icon: Camera,
+                },
                 {
                   label: en ? "Résumé" : "Currículo",
                   href: "/CV_Nayra_Zanini.pdf",
@@ -476,14 +505,23 @@ function IndexContent() {
                 <a
                   key={c.label}
                   href={c.href}
-                  {...(c.download
+                  {...("acao" in c && c.acao
+                    ? {
+                        onClick: (e: MouseEvent<HTMLAnchorElement>) =>
+                          abrirCanal(e, c.acao as string),
+                      }
+                    : {})}
+                  {...("download" in c && c.download
                     ? { download: "CV_Nayra_Zanini.pdf" }
                     : c.href.startsWith("http")
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
                   className="group h-14 rounded-xl border border-border/60 px-4 flex items-center justify-center gap-2.5 text-sm text-ink hover:border-terracotta/60 hover:text-terracotta transition-colors"
                 >
-                  <c.icon className="h-4 w-4 text-terracotta" aria-hidden="true" />
+                  <c.icon
+                    className="h-4 w-4 text-terracotta"
+                    aria-hidden="true"
+                  />
                   {c.label}
                 </a>
               ))}
