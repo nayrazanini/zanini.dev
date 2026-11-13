@@ -42,17 +42,6 @@ const FINANCAS_EN = {
   cta: "View case study and open the app",
 };
 
-const FINANCAS: Card = {
-  n: "04",
-  title: "financas-pessoais",
-  tagline: "Aplicação full-stack + SQL Server",
-  description:
-    "Sistema de controle financeiro pessoal com autenticação, lançamentos, orçamentos e dashboard. Toda a escrita passa por stored procedures em T-SQL, com views de consolidação e app em Next.js 15. Disponível também como app utilizável aqui no site.",
-  tags: ["SQL Server", "T-SQL", "Next.js", "TypeScript"],
-  path: "/projetos/financas-pessoais",
-  cta: "Ver case study e abrir o app",
-};
-
 const CARDS: Card[] = [
   ...PROJETOS.map((p) => ({
     n: p.n,
@@ -63,8 +52,9 @@ const CARDS: Card[] = [
     slug: p.slug,
     cta: p.appPath ? "Ver case study e abrir o app" : "Ver case study",
   })),
-  FINANCAS,
-].sort((a, b) => a.n.localeCompare(b.n));
+]
+  .sort((a, b) => a.n.localeCompare(b.n))
+  .map((c, i) => ({ ...c, n: String(i + 1).padStart(2, "0") }));
 
 const cardClass =
   "group grid grid-cols-[auto_1fr_auto] md:grid-cols-[100px_1fr_auto] gap-4 md:gap-6 p-5 sm:p-8 rounded-2xl bg-card border border-border/60 hover:border-terracotta/50 hover:shadow-hover transition-all";
@@ -73,12 +63,16 @@ function CardBody({ p }: { p: Card }) {
   const { language } = useLanguage();
   const en = language === "en";
   const traducao = p.slug ? PROJECT_TRANSLATIONS[p.slug] : undefined;
-  const tagline = en ? (p.path ? FINANCAS_EN.tagline : traducao?.tagline ?? p.tagline) : p.tagline;
+  const tagline = en
+    ? p.path
+      ? FINANCAS_EN.tagline
+      : (traducao?.tagline ?? p.tagline)
+    : p.tagline;
   const title = en && traducao?.title ? traducao.title : p.title;
   const description = en
     ? p.path
       ? FINANCAS_EN.description
-      : traducao?.description ?? p.description
+      : (traducao?.description ?? p.description)
     : p.description;
   const cta = en
     ? p.path || p.cta.includes("abrir o app")
@@ -88,7 +82,9 @@ function CardBody({ p }: { p: Card }) {
 
   return (
     <>
-      <p className="font-display text-2xl md:text-3xl text-terracotta shrink-0">{p.n}</p>
+      <p className="font-display text-2xl md:text-3xl text-terracotta shrink-0">
+        {p.n}
+      </p>
       <div className="min-w-0">
         <p className="text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
           {tagline}
@@ -109,7 +105,9 @@ function CardBody({ p }: { p: Card }) {
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-xs sm:text-sm text-terracotta font-medium">{cta} →</p>
+        <p className="mt-3 text-xs sm:text-sm text-terracotta font-medium">
+          {cta} →
+        </p>
       </div>
       <span className="self-start text-terracotta group-hover:translate-x-1 transition-transform text-xl md:text-2xl shrink-0">
         →
@@ -130,7 +128,10 @@ function ProjetosPage() {
         </p>
         <h1 className="mt-4 sm:mt-6 font-display text-3xl sm:text-5xl md:text-6xl font-medium leading-tight">
           {en ? "Things I built " : "Coisas que construí "}
-          <span className="italic text-terracotta">{en ? "in practice" : "na prática"}</span>.
+          <span className="italic text-terracotta">
+            {en ? "in practice" : "na prática"}
+          </span>
+          .
         </h1>
         <p className="mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
           {en
@@ -143,7 +144,11 @@ function ProjetosPage() {
         <div className="grid gap-4 sm:gap-6">
           {CARDS.map((p) =>
             p.path ? (
-              <Link key={p.title} to="/projetos/financas-pessoais" className={cardClass}>
+              <Link
+                key={p.title}
+                to="/projetos/financas-pessoais"
+                className={cardClass}
+              >
                 <CardBody p={p} />
               </Link>
             ) : (

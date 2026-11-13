@@ -36,10 +36,11 @@ const PROJECT_TRANSLATIONS: Record<
 
 type ProjectCardProps = {
   project: (typeof PROJETOS)[number];
+  numero: number;
   en: boolean;
 };
 
-function ProjectCard({ project, en }: ProjectCardProps) {
+function ProjectCard({ project, numero, en }: ProjectCardProps) {
   const translation = en ? PROJECT_TRANSLATIONS[project.slug] : undefined;
   const titulo = translation?.title ?? project.title;
 
@@ -47,7 +48,9 @@ function ProjectCard({ project, en }: ProjectCardProps) {
     <article className="group grid min-h-[340px] gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12 lg:p-12">
       <div className="flex flex-col">
         <div className="mb-6 flex items-center gap-4">
-          <span className="font-display text-3xl text-terracotta sm:text-4xl">{project.n}</span>
+          <span className="font-display text-3xl text-terracotta sm:text-4xl">
+            {String(numero).padStart(2, "0")}
+          </span>
           {project.slug === "pr-gerencia-menu" && (
             <span className="rounded-full border border-terracotta/50 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-terracotta">
               {en ? "Featured project" : "Projeto em destaque"}
@@ -89,7 +92,8 @@ function ProjectCard({ project, en }: ProjectCardProps) {
             params={{ slug: project.slug }}
             className="rounded-full border border-terracotta/70 px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-terracotta/10"
           >
-            {en ? "View project" : "Conhecer projeto"} <span aria-hidden="true">↗</span>
+            {en ? "View project" : "Conhecer projeto"}{" "}
+            <span aria-hidden="true">↗</span>
           </Link>
           <a
             href={project.repo}
@@ -119,7 +123,11 @@ export function ProjectsCarousel() {
 
   useEffect(() => {
     if (pausado || total < 2) return;
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
     const t = setTimeout(() => go(1), PROJECT_INTERVAL);
     return () => clearTimeout(t);
   }, [index, pausado, total, go]);
@@ -147,7 +155,8 @@ export function ProjectsCarousel() {
               : "Reúno projetos desenvolvidos a partir de desafios práticos, estudos e necessidades reais. As soluções envolvem desenvolvimento de aplicações, banco de dados, automação e lógica de negócio, com foco em transformar problemas em soluções funcionais."}
           </p>
           <span className="self-end whitespace-nowrap font-mono text-xs text-muted-foreground">
-            {String(items.length).padStart(2, "0")} {en ? "projects" : "projetos"}
+            {String(items.length).padStart(2, "0")}{" "}
+            {en ? "projects" : "projetos"}
           </span>
         </div>
       </div>
@@ -168,16 +177,23 @@ export function ProjectsCarousel() {
         `}</style>
 
         <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card transition-colors hover:border-terracotta/40">
-          <div ref={slider.containerRef} {...slider.handlers} style={slider.containerStyle} aria-live="polite">
+          <div
+            ref={slider.containerRef}
+            {...slider.handlers}
+            style={slider.containerStyle}
+            aria-live="polite"
+          >
             <div style={slider.trackStyle}>
               {slider.visiveis.map(({ key, i }) => (
                 <div
                   key={key}
                   aria-hidden={key !== "cur"}
                   style={{ flex: "1 1 0", minWidth: 0 }}
-                  {...(key !== "cur" ? { inert: true as unknown as undefined } : {})}
+                  {...(key !== "cur"
+                    ? { inert: true as unknown as undefined }
+                    : {})}
                 >
-                  <ProjectCard project={items[i]} en={en} />
+                  <ProjectCard project={items[i]} numero={i + 1} en={en} />
                 </div>
               ))}
             </div>
@@ -189,7 +205,9 @@ export function ProjectsCarousel() {
                 key={`${index}-${pausado ? "p" : "r"}`}
                 className="proj-bar h-full origin-left bg-terracotta"
                 style={{
-                  animation: pausado ? undefined : `proj-bar ${PROJECT_INTERVAL}ms linear forwards`,
+                  animation: pausado
+                    ? undefined
+                    : `proj-bar ${PROJECT_INTERVAL}ms linear forwards`,
                   transform: pausado ? "scaleX(0)" : undefined,
                 }}
               />
@@ -198,7 +216,11 @@ export function ProjectsCarousel() {
         </div>
 
         <div className="mt-5 flex items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label={en ? "Projects" : "Projetos"}>
+          <div
+            className="flex flex-wrap items-center gap-2"
+            role="tablist"
+            aria-label={en ? "Projects" : "Projetos"}
+          >
             {items.map((p, i) => (
               <button
                 key={p.slug}
@@ -208,7 +230,9 @@ export function ProjectsCarousel() {
                 aria-label={p.title}
                 onClick={() => goTo(i)}
                 className={`h-2 rounded-full transition-all ${
-                  i === index ? "w-8 bg-terracotta" : "w-2 bg-border hover:bg-terracotta/50"
+                  i === index
+                    ? "w-8 bg-terracotta"
+                    : "w-2 bg-border hover:bg-terracotta/50"
                 }`}
               />
             ))}

@@ -72,8 +72,14 @@ export const PROJETOS: Projeto[] = [
     model: [
       { label: "Usuario", desc: "Credenciais e perfil, com e-mail único." },
       { label: "Conta", desc: "Contas do usuário e saldo inicial." },
-      { label: "Categoria", desc: "Categorias de receitas e despesas por usuário." },
-      { label: "Transacao", desc: "Lançamentos associados à conta, categoria, tipo, valor e data." },
+      {
+        label: "Categoria",
+        desc: "Categorias de receitas e despesas por usuário.",
+      },
+      {
+        label: "Transacao",
+        desc: "Lançamentos associados à conta, categoria, tipo, valor e data.",
+      },
       { label: "Orcamento", desc: "Limite mensal por categoria e usuário." },
     ],
     modules: [
@@ -120,7 +126,13 @@ export const PROJETOS: Projeto[] = [
     tagline: "Gerenciador de menus dinâmicos em T-SQL",
     description:
       "Procedure parametrizada por sistema que cria hierarquias de menus, gera códigos de perfil de acesso com proteção contra concorrência e associa usuários em uma única operação transacional. Versão unificada baseada em projeto real, com nomes genéricos.",
-    tags: ["SQL Server", "T-SQL", "Stored Procedures", "Transações", "Concorrência"],
+    tags: [
+      "SQL Server",
+      "T-SQL",
+      "Stored Procedures",
+      "Transações",
+      "Concorrência",
+    ],
     repo: "https://github.com/nayrazanini/pr_gerencia_menu",
     problem:
       "Sistemas diferentes compartilhavam catálogos de transações, módulos e perfis, mas mantinham regras próprias de nomenclatura e árvores de menu. A existência de procedures quase idênticas aumentava o esforço de manutenção e tornava a liberação de acessos um processo sujeito a inconsistências.",
@@ -142,13 +154,31 @@ export const PROJETOS: Projeto[] = [
       },
     ],
     model: [
-      { label: "catalogo.TB_USUARIO", desc: "Usuários cadastrados e compartilhados entre sistemas." },
+      {
+        label: "catalogo.TB_USUARIO",
+        desc: "Usuários cadastrados e compartilhados entre sistemas.",
+      },
       { label: "catalogo.TB_MODULO", desc: "Módulos cadastrados por sistema." },
-      { label: "catalogo.TB_TRANSACAO_MENU", desc: "Catálogo de telas e transações disponíveis." },
-      { label: "catalogo.TB_PERFIL_ACESSO", desc: "Perfis de acesso gerados pela procedure." },
-      { label: "catalogo.TB_PERFIL_TRANSACAO", desc: "Vínculo entre perfil de acesso e transação." },
-      { label: "catalogo.TB_PERFIL_USUARIO", desc: "Associação entre perfis de acesso e usuários." },
-      { label: "dbo.TB_MENU", desc: "Árvore de navegação mantida localmente por sistema." },
+      {
+        label: "catalogo.TB_TRANSACAO_MENU",
+        desc: "Catálogo de telas e transações disponíveis.",
+      },
+      {
+        label: "catalogo.TB_PERFIL_ACESSO",
+        desc: "Perfis de acesso gerados pela procedure.",
+      },
+      {
+        label: "catalogo.TB_PERFIL_TRANSACAO",
+        desc: "Vínculo entre perfil de acesso e transação.",
+      },
+      {
+        label: "catalogo.TB_PERFIL_USUARIO",
+        desc: "Associação entre perfis de acesso e usuários.",
+      },
+      {
+        label: "dbo.TB_MENU",
+        desc: "Árvore de navegação mantida localmente por sistema.",
+      },
     ],
     sections: [
       {
@@ -181,13 +211,19 @@ export const PROJETOS: Projeto[] = [
     ],
   },
   {
-    n: "04",
+    n: "03",
     slug: "ponto-sql-server",
     title: "PONTO SQL SERVER",
     tagline: "Sistema de controle de ponto em SQL Server",
     description:
       "Projeto de banco de dados para registro e controle de ponto, com procedures e scripts T-SQL voltados ao cadastro de funcionários, marcações de entrada e saída e geração de relatórios.",
-    tags: ["SQL Server", "T-SQL", "Stored Procedures", "Modelagem", "Relatórios"],
+    tags: [
+      "SQL Server",
+      "T-SQL",
+      "Stored Procedures",
+      "Modelagem",
+      "Relatórios",
+    ],
     repo: "https://github.com/nayrazanini/ponto-sql-server",
     problem:
       "O fechamento de folha depende de marcações confiáveis. O desafio do projeto é estruturar jornadas, marcações e ocorrências para permitir consultas consistentes de horas trabalhadas, atrasos e horas extras.",
@@ -210,7 +246,10 @@ export const PROJETOS: Projeto[] = [
     ],
     model: [
       { label: "Funcionario", desc: "Cadastro, setor e jornada contratada." },
-      { label: "Marcacao", desc: "Registros de entrada e saída com data e hora." },
+      {
+        label: "Marcacao",
+        desc: "Registros de entrada e saída com data e hora.",
+      },
       { label: "Ocorrencia", desc: "Faltas, abonos e justificativas." },
     ],
     sections: [
@@ -229,13 +268,19 @@ export const PROJETOS: Projeto[] = [
     ],
   },
   {
-    n: "05",
+    n: "04",
     slug: "estoque-sql-server",
     title: "ESTOQUE SQL SERVER",
     tagline: "Sistema de controle de estoque em SQL Server",
     description:
       "Modelagem e implementação de um sistema de controle de estoque em SQL Server, com tabelas, relacionamentos, procedures e scripts T-SQL para entrada, saída e consulta de produtos.",
-    tags: ["SQL Server", "T-SQL", "Stored Procedures", "Modelagem", "Integridade"],
+    tags: [
+      "SQL Server",
+      "T-SQL",
+      "Stored Procedures",
+      "Modelagem",
+      "Integridade",
+    ],
     repo: "https://github.com/nayrazanini/estoque-sql-server",
     problem:
       "Controlar estoque em planilhas pode gerar saldos negativos, movimentações sem histórico e falta de garantia de que uma baixa foi realizada corretamente. O objetivo é utilizar um banco relacional para manter o histórico e impedir estados inválidos.",
@@ -257,9 +302,18 @@ export const PROJETOS: Projeto[] = [
       },
     ],
     model: [
-      { label: "Produto", desc: "Cadastro, unidade de medida e estoque mínimo." },
-      { label: "Fornecedor", desc: "Dados dos fornecedores associados às entradas." },
-      { label: "Movimentacao", desc: "Entradas e saídas com data, quantidade e responsável." },
+      {
+        label: "Produto",
+        desc: "Cadastro, unidade de medida e estoque mínimo.",
+      },
+      {
+        label: "Fornecedor",
+        desc: "Dados dos fornecedores associados às entradas.",
+      },
+      {
+        label: "Movimentacao",
+        desc: "Entradas e saídas com data, quantidade e responsável.",
+      },
     ],
     sections: [
       {
