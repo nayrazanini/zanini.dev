@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 
-// Arquivo em public/Curriculo_Nayra_Zanini_2026.pdf
-const CV_URL = "/Curriculo_Nayra_Zanini_2026.pdf";
+// Arquivo em public/CV_Nayra_Zanini.pdf
+const CV_URL = "/CV_Nayra_Zanini.pdf";
 
 export const Route = createFileRoute("/experiencia")({
   head: () => ({
@@ -93,7 +93,7 @@ function ExperienciaPage() {
         <div className="mt-6 sm:mt-8">
           <a
             href={CV_URL}
-            download="Curriculo_Nayra_Zanini_2026.pdf"
+            download="CV_Nayra_Zanini.pdf"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-terracotta/40 bg-terracotta/10 text-terracotta text-sm font-medium hover:bg-terracotta/20 transition-colors"
           >
             <span>Baixar currículo</span>
